@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Alterplex - Historique des Recharges</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #000;
+            padding-bottom: 30px;
+        }
+
+        /* En-tête */
+        .header {
+            background-color: #000;
+            color: #fff;
+            padding: 20px 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            color: #fff;
+            font-size: 18px;
+            text-decoration: none;
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .container {
+            padding: 15px;
+        }
+
+        /* Liste des transactions */
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .history-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .amount {
+            font-size: 16px;
+            font-weight: 900;
+            color: #000;
+        }
+
+        .details {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .date {
+            font-size: 10px;
+            color: #999;
+        }
+
+        /* Badges de Statut */
+        .status-badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .empty-history {
+            background: #fff;
+            border: 1px dashed #ccc;
+            border-radius: 14px;
+            padding: 30px 15px;
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+
+        .empty-history i {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- En-tête avec retour -->
+    <div class="header">
+        <a href="profil.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <div class="header-title">Historique des Recharges</div>
+    </div>
+
+    <div class="container">
+        <div class="history-list" id="historyContainer">
+            <div class="empty-history">
+                <i class="fas fa-spinner fa-spin"></i><br>
+                Chargement de votre historique...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dbUrl = "https://canal-e4274-default-rtdb.firebaseio.com";
+        const userPhone = localStorage.getItem('userPhone') || '890000000';
+
+        async function loadRechargeHistory() {
+            try {
+                const res = await fetch(`${dbUrl}/recharges/${userPhone}.json`);
+                const data = await res.json();
+
+                const container = document.getElementById('historyContainer');
+
+                if (!data || Object.keys(data).length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-history">
+                            <i class="fas fa-receipt"></i><br>
+                            Aucune demande de recharge enregistrée.
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = "";
+
+                // Trier les recharges de la plus récente à la plus ancienne
+                const keys = Object.keys(data).reverse();
+
+                keys.forEach(key => {
+                    const item = data[key];
+                    const dateFormatted = item.createdAt ? new Date(item.createdAt).toLocaleString('fr-FR') : 'Date inconnue';
+
+                    let badgeClass = "status-pending";
+                    let statusText = item.status || "En attente";
+
+                    if (item.status === "Validé") badgeClass = "status-approved";
+                    if (item.status === "Rejeté") badgeClass = "status-rejected";
+
+                    container.innerHTML += `
+                        <div class="history-card">
+                            <div class="card-left">
+                                <div class="amount">+ ${(item.amount || 0).toLocaleString('fr-FR')} FC</div>
+                                <div class="details">${item.method || 'Mobile Money'} (Dest: ${item.recipientPhone || 'N/A'})</div>
+                                <div class="date">${dateFormatted}</div>
+                            </div>
+                            <div>
+                                <span class="status-badge ${badgeClass}">${statusText}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+
+            } catch (err) {
+                console.error("Erreur de chargement :", err);
+                document.getElementById('historyContainer').innerHTML = `
+                    <div class="empty-history" style="color: #d93025;">
+                        Erreur de connexion lors de la récupération des données.
+                    </div>
+                `;
+            }
+        }
+
+        window.onload = loadRechargeHistory;
+    </script>
+</body>
+</html>
