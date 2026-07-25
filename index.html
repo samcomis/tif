@@ -121,24 +121,30 @@
             color: #bbb;
         }
 
-        /* Captcha visuel */
+        /* Captcha visuel - Alignement strict sur 1 seule ligne */
         .captcha-wrapper {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }
 
         .captcha-code {
             background-color: #e2e8b0;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-weight: 900;
             font-size: 18px;
-            letter-spacing: 4px;
-            color: #8a3b14;
+            letter-spacing: 5px; /* Espacement fixe et propre */
+            color: #5c4308;
             user-select: none;
             cursor: pointer;
+            white-space: nowrap; /* Empêche tout retour à la ligne */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
         }
 
         /* Bouton de validation */
@@ -201,7 +207,7 @@
             </div>
             <div class="input-box captcha-wrapper">
                 <input type="text" id="regCaptchaInput" placeholder="Entrez le code" required>
-                <div class="captcha-code" id="captchaDisplay" onclick="generateCaptcha()" title="Cliquer pour changer">T WX P</div>
+                <div class="captcha-code" id="captchaDisplay" onclick="generateCaptcha()" title="Cliquer pour changer">----</div>
             </div>
             <div class="input-box">
                 <input type="text" id="regRefCode" placeholder="Code d'invitation (Optionnel)">
@@ -247,7 +253,7 @@
             }
         }
 
-        // Générateur de Captcha visuel
+        // Générateur de Captcha visuel (1 seule ligne)
         function generateCaptcha() {
             const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             let result = "";
@@ -255,7 +261,8 @@
                 result += chars.charAt(Math.floor(Math.random() * chars.length));
             }
             currentCaptcha = result;
-            document.getElementById('captchaDisplay').innerText = result.split('').join(' ');
+            // Injection directe de la chaîne de caractères (gérée horizontalement par le CSS letter-spacing)
+            document.getElementById('captchaDisplay').innerText = result;
         }
 
         // Helper pour générer un code d'invitation unique (6 lettres)
