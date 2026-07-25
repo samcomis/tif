@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Alterplex énergie - Authentification</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 30px 20px;
+            color: #000;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Branding / Titre */
+        .brand-title {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .welcome-text {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-family: Georgia, serif;
+        }
+
+        /* Selecteur d'onglets (Se connecter / S'inscrire) */
+        .tab-box {
+            display: flex;
+            width: 100%;
+            border: 1px solid #000;
+            border-radius: 12px;
+            padding: 3px;
+            margin-bottom: 25px;
+            background: #fff;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 0;
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #666;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background: #000;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Formulaires */
+        .form-section {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-section.active {
+            display: flex;
+        }
+
+        .input-box {
+            width: 100%;
+            background-color: #f9f9f9;
+            border: 1px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-box span.prefix {
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 10px;
+            color: #000;
+        }
+
+        .input-box input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .input-box input::placeholder {
+            color: #bbb;
+        }
+
+        /* Captcha visuel */
+        .captcha-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .captcha-code {
+            background-color: #e2e8b0;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 18px;
+            letter-spacing: 4px;
+            color: #8a3b14;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        /* Bouton de validation */
+        .submit-btn {
+            width: 100%;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: opacity 0.2s;
+        }
+
+        .submit-btn:active {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <!-- Logo / Titre Safe Alterplex énergie -->
+        <div class="brand-title">SAFE ALTERPLEX</div>
+        <div class="welcome-text">Bienvenue !</div>
+
+        <!-- Boutons de permutation -->
+        <div class="tab-box">
+            <button class="tab-btn active" id="tabLoginBtn" onclick="switchTab('login')">Se connecter</button>
+            <button class="tab-btn" id="tabRegisterBtn" onclick="switchTab('register')">S'inscrire</button>
+        </div>
+
+        <!-- FORMULAIRE SE CONNECTER -->
+        <form class="form-section active" id="loginForm" onsubmit="handleLogin(event)">
+            <div class="input-box">
+                <span class="prefix">+243</span>
+                <input type="tel" id="loginPhone" placeholder="Saisir le numéro de compte" required>
+            </div>
+            <div class="input-box">
+                <input type="password" id="loginPassword" placeholder="Entrez votre mot de passe" required>
+            </div>
+            <button type="submit" class="submit-btn">Se connecter</button>
+        </form>
+
+        <!-- FORMULAIRE S'INSCRIRE -->
+        <form class="form-section" id="registerForm" onsubmit="handleRegister(event)">
+            <div class="input-box">
+                <span class="prefix">+243</span>
+                <input type="tel" id="regPhone" placeholder="Saisir le numéro de compte" required>
+            </div>
+            <div class="input-box">
+                <input type="password" id="regPassword" placeholder="Entrez votre mot de passe" required>
+            </div>
+            <div class="input-box">
+                <input type="password" id="regConfirmPassword" placeholder="Saisir à nouveau le mot de passe" required>
+            </div>
+            <div class="input-box captcha-wrapper">
+                <input type="text" id="regCaptchaInput" placeholder="Entrez le code" required>
+                <div class="captcha-code" id="captchaDisplay" onclick="generateCaptcha()" title="Cliquer pour changer">T WX P</div>
+            </div>
+            <div class="input-box">
+                <input type="text" id="regRefCode" placeholder="Code d'invitation (Optionnel)">
+            </div>
+            <button type="submit" class="submit-btn">S'inscrire</button>
+        </form>
+    </div>
+
+    <script>
+        // URL de la base de données Firebase
+        const dbUrl = "https://canal-e4274-default-rtdb.firebaseio.com";
+        let currentCaptcha = "";
+
+        // Récupérer le code de parrainage dans l'URL (si présent : ?ref=CODE)
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refParam = urlParams.get('ref');
+            if (refParam) {
+                document.getElementById('regRefCode').value = refParam;
+                switchTab('register');
+            }
+            generateCaptcha();
+        };
+
+        // Permutation des onglets
+        function switchTab(tab) {
+            const loginBtn = document.getElementById('tabLoginBtn');
+            const registerBtn = document.getElementById('tabRegisterBtn');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+
+            if (tab === 'login') {
+                loginBtn.classList.add('active');
+                registerBtn.classList.remove('active');
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+            } else {
+                registerBtn.classList.add('active');
+                loginBtn.classList.remove('active');
+                registerForm.classList.add('active');
+                loginForm.classList.remove('active');
+                generateCaptcha();
+            }
+        }
+
+        // Générateur de Captcha visuel
+        function generateCaptcha() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let result = "";
+            for (let i = 0; i < 4; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            currentCaptcha = result;
+            document.getElementById('captchaDisplay').innerText = result.split('').join(' ');
+        }
+
+        // Helper pour générer un code d'invitation unique (6 lettres)
+        function generateInviteCode() {
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let code = "";
+            for (let i = 0; i < 6; i++) {
+                code += letters.charAt(Math.floor(Math.random() * letters.length));
+            }
+            return code;
+        }
+
+        // TRAITEMENT DE LA CONNEXION
+        async function handleLogin(e) {
+            e.preventDefault();
+            const phone = document.getElementById('loginPhone').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!phone || !password) {
+                alert("Veuillez remplir tous les champs.");
+                return;
+            }
+
+            try {
+                const res = await fetch(`${dbUrl}/users/${phone}.json`);
+                const user = await res.json();
+
+                if (!user) {
+                    alert("Compte inexistant. Veuillez d'abord vous inscrire.");
+                    return;
+                }
+
+                if (user.password !== password) {
+                    alert("Mot de passe incorrect.");
+                    return;
+                }
+
+                // Enregistrement de la session locale
+                localStorage.setItem('userPhone', phone);
+                alert("Connexion réussie !");
+                window.location.href = "dashboard.html";
+
+            } catch (err) {
+                console.error(err);
+                alert("Erreur réseau. Veuillez réessayer.");
+            }
+        }
+
+        // TRAITEMENT DE L'INSCRIPTION
+        async function handleRegister(e) {
+            e.preventDefault();
+            const phone = document.getElementById('regPhone').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            const captchaInput = document.getElementById('regCaptchaInput').value.trim().toUpperCase();
+            const refCode = document.getElementById('regRefCode').value.trim();
+
+            if (password !== confirmPassword) {
+                alert("Les mots de passe ne correspondent pas.");
+                return;
+            }
+
+            if (captchaInput !== currentCaptcha) {
+                alert("Code captcha incorrect.");
+                generateCaptcha();
+                return;
+            }
+
+            try {
+                // Vérification si l'utilisateur existe déjà
+                const checkRes = await fetch(`${dbUrl}/users/${phone}.json`);
+                const existingUser = await checkRes.json();
+
+                if (existingUser) {
+                    alert("Ce numéro de téléphone est déjà inscrit.");
+                    return;
+                }
+
+                const myInviteCode = generateInviteCode();
+
+                const newUser = {
+                    phone: phone,
+                    password: password,
+                    balance: 0,
+                    inviteCode: myInviteCode,
+                    referredBy: refCode || "",
+                    createdAt: new Date().toISOString()
+                };
+
+                // Enregistrement dans Firebase
+                await fetch(`${dbUrl}/users/${phone}.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify(newUser)
+                });
+
+                localStorage.setItem('userPhone', phone);
+                alert("Inscription réussie !");
+                window.location.href = "dashboard.html";
+
+            } catch (err) {
+                console.error(err);
+                alert("Erreur lors de l'inscription. Veuillez réessayer.");
+            }
+        }
+    </script>
+</body>
+</html>
