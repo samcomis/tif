@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Alterplex énergie - Équipe & Parrainage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #000;
+            padding-bottom: 90px;
+        }
+
+        /* En-tête */
+        .top-header {
+            background-color: #000;
+            color: #fff;
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .brand-title {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .page-subtitle {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        .container {
+            padding: 15px;
+        }
+
+        /* Section Lien d'invitation */
+        .invite-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            margin-bottom: 20px;
+        }
+
+        .invite-title {
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-box {
+            background: #f0f0f0;
+            border: 1px dashed #000;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .code-text {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: lowercase; /* Forcer l'affichage en minuscule */
+        }
+
+        .btn-copy {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-copy:active {
+            opacity: 0.8;
+        }
+
+        .link-text {
+            font-size: 11px;
+            color: #666;
+            word-break: break-all;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+
+        /* Stats Globales de l'Équipe */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background: #fff;
+            border: 1px solid #eaeaea;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .summary-card i {
+            font-size: 18px;
+            margin-bottom: 6px;
+            color: #000;
+        }
+
+        .summary-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .summary-value {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        /* Niveaux de Parrainage */
+        .section-title {
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .levels-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .level-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .level-name {
+            font-size: 14px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .level-badge {
+            background: #000;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 12px;
+        }
+
+        .level-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .level-stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .level-stat-label {
+            font-size: 11px;
+            color: #777;
+        }
+
+        .level-stat-value {
+            font-size: 14px;
+            font-weight: 800;
+            color: #000;
+        }
+
+        /* Historique de l'Équipe */
+        .history-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 14px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .history-tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: #f0f0f0;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #555;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #000;
+            color: #fff;
+        }
+
+        .members-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .member-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .member-phone {
+            font-size: 13px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        .member-date {
+            font-size: 10px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .member-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        .badge-active {
+            background: #e6f4ea;
+            color: #137333;
+        }
+
+        .empty-state {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            padding: 20px 0;
+        }
+
+        /* Navigation inférieure */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid #e0e0e0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #888;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            color: #000;
+            font-weight: 800;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- En-tête -->
+    <div class="top-header">
+        <div class="brand-title">PROGRAMME D'AFFILIATION</div>
+        <div class="page-subtitle">Invitez vos proches & gagnez des commissions automatiques</div>
+    </div>
+
+    <div class="container">
+
+        <!-- Carte Parrainage & Lien -->
+        <div class="invite-card">
+            <div class="invite-title">
+                <i class="fas fa-share-nodes"></i> Mon Code de Parrainage
+            </div>
+            
+            <div class="code-box">
+                <span class="code-text" id="referralCode">......</span>
+                <button class="btn-copy" onclick="copyCode()">Copier le code</button>
+            </div>
+
+            <div class="invite-title" style="margin-top: 15px; font-size: 12px;">
+                Lien d'invitation direct :
+            </div>
+            <div class="link-text" id="referralLink">
+                Chargement du lien...
+            </div>
+            <button class="btn-copy" style="width: 100%; margin-top: 10px; padding: 10px;" onclick="copyLink()">
+                <i class="fas fa-copy"></i> Copier mon lien d'invitation
+            </button>
+        </div>
+
+        <!-- Synthèse globale de l'équipe -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <i class="fas fa-users"></i>
+                <div class="summary-label">Membres Totaux</div>
+                <div class="summary-value" id="totalTeamMembers">0</div>
+            </div>
+            <div class="summary-card">
+                <i class="fas fa-sack-dollar"></i>
+                <div class="summary-label">Commissions Totales</div>
+                <div class="summary-value" id="totalTeamGains">0 FC</div>
+            </div>
+        </div>
+
+        <!-- Structure des 3 Niveaux -->
+        <div class="section-title">Niveaux de Parrainage</div>
+        <div class="levels-container">
+
+            <!-- Niveau 1 -->
+            <div class="level-card">
+                <div class="level-header">
+                    <span class="level-name">
+                        <i class="fas fa-user-check"></i> Niveau 1 (Direct)
+                    </span>
+                    <span class="level-badge">22 % Commission</span>
+                </div>
+                <div class="level-stats">
+                    <div class="level-stat-item">
+                        <span class="level-stat-label">Membres actifs</span>
+                        <span class="level-stat-value" id="lv1Count">0 membre(s)</span>
+                    </div>
+                    <div class="level-stat-item">
+                        <span class="level-stat-label">Gains générés</span>
+                        <span class="level-stat-value" id="lv1Gains">0 FC</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Niveau 2 -->
+            <div class="level-card">
+                <div class="level-header">
+                    <span class="level-name">
+                        <i class="fas fa-users-line"></i> Niveau 2 (Indirect)
+                    </span>
+                    <span class="level-badge">3 % Commission</span>
+                </div>
+                <div class="level-stats">
+                    <div class="level-stat-item">
+                        <span class="level-stat-label">Membres actifs</span>
+                        <span class="level-stat-value" id="lv2Count">0 membre(s)</span>
+                    </div>
+                    <div class="level-stat-item">
+                        <span class="level-stat-label">Gains générés</span>
+                        <span class="level-stat-value" id="lv2Gains">0 FC</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Niveau 3 -->
+            <div class="level-card">
+                <div class="level-header">
+                    <span class="level-name">
+                        <i class="fas fa-network-wired"></i> Niveau 3 (Sous-indirect)
+                    </span>
+                    <span class="level-badge">1 % Commission</span>
+                </div>
+                <div class="level-stats">
+                    <div class="level-stat-item">
+                        <span class="level-stat-label">Membres actifs</span>
+                        <span class="level-stat-value" id="lv3Count">0 membre(s)</span>
+                    </div>
+                    <div class="level-stat-item">
+                        <span class="level-stat-label">Gains générés</span>
+                        <span class="level-stat-value" id="lv3Gains">0 FC</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Section Historique / Liste des Membres -->
+        <div class="section-title" style="margin-top: 25px;">Historique de l'Équipe</div>
+        <div class="history-card">
+            <!-- Onglets de Navigation -->
+            <div class="history-tabs">
+                <button class="tab-btn active" onclick="switchTab('lv1', event)">Niveau 1</button>
+                <button class="tab-btn" onclick="switchTab('lv2', event)">Niveau 2</button>
+                <button class="tab-btn" onclick="switchTab('lv3', event)">Niveau 3</button>
+            </div>
+
+            <!-- Liste dynamique des membres -->
+            <div class="members-list" id="membersListContainer">
+                <div class="empty-state">Chargement de la liste...</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navigation du Bas -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fas fa-house nav-icon"></i>Accueil
+        </a>
+        <a href="produit.html" class="nav-item">
+            <i class="fas fa-bolt nav-icon"></i>Énergie
+        </a>
+        <a href="equipe.html" class="nav-item active">
+            <i class="fas fa-user-group nav-icon"></i>Équipe
+        </a>
+        <a href="profil.html" class="nav-item">
+            <i class="fas fa-user nav-icon"></i>Moi
+        </a>
+    </nav>
+
+    <script>
+        const dbUrl = "https://canal-e4274-default-rtdb.firebaseio.com";
+        const userPhone = localStorage.getItem('userPhone') || '890000000';
+
+        let userInviteCode = "";
+        let fullInviteLink = "";
+
+        let teamDataByLevel = {
+            lv1: [],
+            lv2: [],
+            lv3: []
+        };
+
+        // Générer un code de parrainage unique en LETTRES MINUSCULES
+        function generateLowercaseCode(length = 6) {
+            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        // Masquer le milieu du numéro (ex: 89***00)
+        function formatPhone(phone) {
+            if (!phone || phone.length < 6) return phone;
+            return phone.substring(0, 3) + "***" + phone.substring(phone.length - 2);
+        }
+
+        async function loadTeamData() {
+            try {
+                // Fetch utilisateur principal
+                const userRes = await fetch(`${dbUrl}/users/${userPhone}.json`);
+                const userData = await userRes.json();
+
+                if (userData) {
+                    // S'assurer que le code existe et qu'il est STRICTEMENT en lettres minuscules
+                    if (!userData.inviteCode) {
+                        userInviteCode = generateLowercaseCode();
+                        // Mettre à jour Firebase avec le nouveau code en minuscules
+                        await fetch(`${dbUrl}/users/${userPhone}/inviteCode.json`, {
+                            method: 'PUT',
+                            body: JSON.stringify(userInviteCode)
+                        });
+                    } else {
+                        userInviteCode = userData.inviteCode.toLowerCase();
+                        // Forcer la sauvegarde si l'ancien code était en majuscules
+                        if (userData.inviteCode !== userInviteCode) {
+                            await fetch(`${dbUrl}/users/${userPhone}/inviteCode.json`, {
+                                method: 'PUT',
+                                body: JSON.stringify(userInviteCode)
+                            });
+                        }
+                    }
+                    
+                    // Génération du lien de parrainage exact vers GitHub Pages
+                    fullInviteLink = `https://solixoiy.github.io/tif/index.html?ref=${userInviteCode}`;
+
+                    document.getElementById('referralCode').innerText = userInviteCode;
+                    document.getElementById('referralLink').innerText = fullInviteLink;
+
+                    // Affichage des gains déjà enregistrés
+                    const gainsLV1 = userData.totalGainsLV1 || 0;
+                    const gainsLV2 = userData.totalGainsLV2 || 0;
+                    const gainsLV3 = userData.totalGainsLV3 || 0;
+
+                    document.getElementById('lv1Gains').innerText = gainsLV1.toLocaleString('fr-FR') + " FC";
+                    document.getElementById('lv2Gains').innerText = gainsLV2.toLocaleString('fr-FR') + " FC";
+                    document.getElementById('lv3Gains').innerText = gainsLV3.toLocaleString('fr-FR') + " FC";
+
+                    const totalGains = gainsLV1 + gainsLV2 + gainsLV3;
+                    document.getElementById('totalTeamGains').innerText = totalGains.toLocaleString('fr-FR') + " FC";
+                }
+
+                // Récupération de tous les utilisateurs pour calculer la structure de l'équipe
+                const allUsersRes = await fetch(`${dbUrl}/users.json`);
+                const allUsers = await allUsersRes.json();
+
+                if (allUsers) {
+                    calculateTeamMembers(allUsers, userInviteCode);
+                }
+
+            } catch (err) {
+                console.error("Erreur de chargement des données d'équipe :", err);
+            }
+        }
+
+        // Calcul dynamique et remplissage des membres par niveau
+        function calculateTeamMembers(usersData, myCode) {
+            teamDataByLevel = { lv1: [], lv2: [], lv3: [] };
+            let lv1Codes = [];
+            let lv2Codes = [];
+
+            // Niveau 1 : Parrainés directs
+            for (let ph in usersData) {
+                const userRefBy = (usersData[ph].referredBy || "").toLowerCase();
+                if (userRefBy === myCode) {
+                    const uCode = (usersData[ph].inviteCode || "").toLowerCase();
+                    lv1Codes.push(uCode);
+                    teamDataByLevel.lv1.push({
+                        phone: ph,
+                        joinedAt: usersData[ph].createdAt || "Récemment"
+                    });
+                }
+            }
+
+            // Niveau 2 : Parrainés par le Niveau 1
+            for (let ph in usersData) {
+                const userRefBy = (usersData[ph].referredBy || "").toLowerCase();
+                if (lv1Codes.includes(userRefBy)) {
+                    const uCode = (usersData[ph].inviteCode || "").toLowerCase();
+                    lv2Codes.push(uCode);
+                    teamDataByLevel.lv2.push({
+                        phone: ph,
+                        joinedAt: usersData[ph].createdAt || "Récemment"
+                    });
+                }
+            }
+
+            // Niveau 3 : Parrainés par le Niveau 2
+            for (let ph in usersData) {
+                const userRefBy = (usersData[ph].referredBy || "").toLowerCase();
+                if (lv2Codes.includes(userRefBy)) {
+                    teamDataByLevel.lv3.push({
+                        phone: ph,
+                        joinedAt: usersData[ph].createdAt || "Récemment"
+                    });
+                }
+            }
+
+            // Mettre à jour les compteurs
+            const count1 = teamDataByLevel.lv1.length;
+            const count2 = teamDataByLevel.lv2.length;
+            const count3 = teamDataByLevel.lv3.length;
+
+            document.getElementById('lv1Count').innerText = count1 + " membre(s)";
+            document.getElementById('lv2Count').innerText = count2 + " membre(s)";
+            document.getElementById('lv3Count').innerText = count3 + " membre(s)";
+            document.getElementById('totalTeamMembers').innerText = count1 + count2 + count3;
+
+            // Afficher le niveau 1 par défaut
+            renderMembers('lv1');
+        }
+
+        // Gestion du changement d'onglet dans l'historique
+        function switchTab(level, event) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (event) event.target.classList.add('active');
+            renderMembers(level);
+        }
+
+        // Rendu graphique de la liste d'historique
+        function renderMembers(level) {
+            const container = document.getElementById('membersListContainer');
+            const list = teamDataByLevel[level] || [];
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="empty-state">Aucun membre enregistré dans ce niveau.</div>`;
+                return;
+            }
+
+            container.innerHTML = "";
+            list.forEach(m => {
+                container.innerHTML += `
+                    <div class="member-item">
+                        <div>
+                            <div class="member-phone">+243 ${formatPhone(m.phone)}</div>
+                            <div class="member-date">Inscrit le : ${m.joinedAt}</div>
+                        </div>
+                        <span class="member-badge badge-active"><i class="fas fa-check-circle"></i> Membre</span>
+                    </div>
+                `;
+            });
+        }
+
+        // Fonctions de copie
+        function copyCode() {
+            navigator.clipboard.writeText(userInviteCode);
+            alert("Code de parrainage copié : " + userInviteCode);
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(fullInviteLink);
+            alert("Lien d'invitation copié avec succès !");
+        }
+
+        window.onload = loadTeamData;
+    </script>
+</body>
+</html>
