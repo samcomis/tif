@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Alterplex énergie - Nos Produits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #000;
+            padding-bottom: 90px;
+        }
+
+        /* En-tête */
+        .top-header {
+            background-color: #000;
+            color: #fff;
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .brand-title {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .page-subtitle {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        .container {
+            padding: 0 15px;
+        }
+
+        /* Grille des cartes */
+        .products-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .product-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .card-badge {
+            background: #000;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .card-duration {
+            font-size: 12px;
+            font-weight: 700;
+            color: #333;
+            background: #f0f0f0;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .card-body {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #777;
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 800;
+            color: #000;
+        }
+
+        .btn-buy {
+            width: 100%;
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-buy:active {
+            opacity: 0.8;
+        }
+
+        /* Navigation inférieure */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid #e0e0e0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #888;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            color: #000;
+            font-weight: 800;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-header">
+        <div class="brand-title">SAFE ALTERPLEX ÉNERGIE</div>
+        <div class="page-subtitle">Projets d'Investissement Énergétique</div>
+    </div>
+
+    <div class="container">
+        <div class="products-grid" id="productsList"></div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fas fa-house nav-icon"></i>Accueil
+        </a>
+        <a href="produit.html" class="nav-item active">
+            <i class="fas fa-bolt nav-icon"></i>Énergie
+        </a>
+        <a href="equipe.html" class="nav-item">
+            <i class="fas fa-user-group nav-icon"></i>Équipe
+        </a>
+        <a href="profil.html" class="nav-item">
+            <i class="fas fa-user nav-icon"></i>Moi
+        </a>
+    </nav>
+
+    <script>
+        const dbUrl = "https://canal-e4274-default-rtdb.firebaseio.com";
+        const userPhone = localStorage.getItem('userPhone') || '890000000';
+
+        // Grille mise à jour des 8 cartes selon vos spécifications
+        const products = [
+            { id: 1, name: "Card 1", price: 4000, dailyIncome: 3000, durationDays: 2, totalProfit: 6000 },
+            { id: 2, name: "Card 2", price: 20000, dailyIncome: 1500, durationDays: 20, totalProfit: 30000 },
+            { id: 3, name: "Card 3", price: 80000, dailyIncome: 10000, durationDays: 10, totalProfit: 100000 },
+            { id: 4, name: "Card 4", price: 150000, dailyIncome: 11000, durationDays: 20, totalProfit: 220000 },
+            { id: 5, name: "Card 5", price: 300000, dailyIncome: 23000, durationDays: 20, totalProfit: 460000 },
+            { id: 6, name: "Card 6", price: 500000, dailyIncome: 62300, durationDays: 10, totalProfit: 623000 },
+            { id: 7, name: "Card 7", price: 700000, dailyIncome: 100000, durationDays: 10, totalProfit: 1000000 },
+            { id: 8, name: "Card 8", price: 1500000, dailyIncome: 200000, durationDays: 12, totalProfit: 2400000 }
+        ];
+
+        // Rendu dynamique des cartes
+        function renderProducts() {
+            const container = document.getElementById('productsList');
+            container.innerHTML = "";
+
+            products.forEach(p => {
+                container.innerHTML += `
+                    <div class="product-card">
+                        <div class="card-header">
+                            <span class="card-badge">${p.name}</span>
+                            <span class="card-duration"><i class="far fa-calendar-alt"></i> ${p.durationDays} Jours</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-item">
+                                <span class="info-label">Investissement</span>
+                                <span class="info-value">${p.price.toLocaleString('fr-FR')} FC</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Revenu / Jour</span>
+                                <span class="info-value">${p.dailyIncome.toLocaleString('fr-FR')} FC/j</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Durée totale</span>
+                                <span class="info-value">${p.durationDays} Jours</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Total à obtenir</span>
+                                <span class="info-value">${p.totalProfit.toLocaleString('fr-FR')} FC</span>
+                            </div>
+                        </div>
+                        <button class="btn-buy" onclick="buyProduct(${p.id})">Investir ${p.price.toLocaleString('fr-FR')} FC</button>
+                    </div>
+                `;
+            });
+        }
+
+        // Achat d'une carte d'investissement
+        async function buyProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            if (!confirm(`Confirmez-vous l'investissement de ${product.price.toLocaleString('fr-FR')} FC dans ${product.name} ?`)) return;
+
+            try {
+                // 1. Récupération des infos utilisateur
+                const userRes = await fetch(`${dbUrl}/users/${userPhone}.json`);
+                const user = await userRes.json();
+
+                if (!user) {
+                    alert("Compte non trouvé. Veuillez vous re-connecter.");
+                    return;
+                }
+
+                if ((user.balance || 0) < product.price) {
+                    alert("Solde insuffisant ! Veuillez recharger votre compte.");
+                    return;
+                }
+
+                // 2. Déduction du montant investi
+                const newBalance = user.balance - product.price;
+                await fetch(`${dbUrl}/users/${userPhone}/balance.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify(newBalance)
+                });
+
+                // 3. Enregistrement du projet actif
+                const purchaseData = {
+                    productId: product.id,
+                    productName: product.name,
+                    price: product.price,
+                    dailyIncome: product.dailyIncome,
+                    durationDays: product.durationDays,
+                    totalProfit: product.totalProfit,
+                    purchasedAt: new Date().toISOString(),
+                    lastPayoutAt: new Date().toISOString()
+                };
+
+                await fetch(`${dbUrl}/purchases/${userPhone}.json`, {
+                    method: 'POST',
+                    body: JSON.stringify(purchaseData)
+                });
+
+                // 4. Attribution des commissions d'affiliation (22%, 3%, 1%)
+                await distributeCommissions(user.referredBy, product.price);
+
+                alert(`Félicitations ! Vous avez activé ${product.name} avec succès.`);
+                window.location.href = "dashboard.html";
+
+            } catch (err) {
+                console.error("Erreur lors de l'achat :", err);
+                alert("Une erreur s'est produite lors de la validation de votre achat.");
+            }
+        }
+
+        // Distribution automatique des commissions
+        async function distributeCommissions(uplineCode, investmentAmount) {
+            if (!uplineCode) return;
+
+            const rates = [0.22, 0.03, 0.01]; // 22%, 3%, 1%
+            let currentRefCode = uplineCode;
+
+            for (let level = 0; level < 3; level++) {
+                if (!currentRefCode) break;
+
+                const allUsersRes = await fetch(`${dbUrl}/users.json`);
+                const allUsers = await allUsersRes.json();
+
+                let sponsorPhone = null;
+                let sponsorData = null;
+
+                for (let ph in allUsers) {
+                    if (allUsers[ph].inviteCode === currentRefCode) {
+                        sponsorPhone = ph;
+                        sponsorData = allUsers[ph];
+                        break;
+                    }
+                }
+
+                if (sponsorPhone && sponsorData) {
+                    const commission = Math.round(investmentAmount * rates[level]);
+                    const currentBalance = sponsorData.balance || 0;
+                    const fieldGainsName = `totalGainsLV${level + 1}`;
+                    const currentLevelGains = sponsorData[fieldGainsName] || 0;
+
+                    // Crédit de la commission
+                    await fetch(`${dbUrl}/users/${sponsorPhone}/balance.json`, {
+                        method: 'PUT',
+                        body: JSON.stringify(currentBalance + commission)
+                    });
+
+                    // Mise à jour des gains par niveau
+                    await fetch(`${dbUrl}/users/${sponsorPhone}/${fieldGainsName}.json`, {
+                        method: 'PUT',
+                        body: JSON.stringify(currentLevelGains + commission)
+                    });
+
+                    // Remonter au parrain de niveau supérieur
+                    currentRefCode = sponsorData.referredBy;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        window.onload = renderProducts;
+    </script>
+
+</body>
+</html>
