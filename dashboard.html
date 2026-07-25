@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Alterplex énergie - Tableau de bord</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #000;
+            padding-bottom: 90px;
+        }
+
+        /* En-tête */
+        .top-header {
+            background-color: #000;
+            color: #fff;
+            padding: 20px 15px 30px 15px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .header-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .brand-title {
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .user-phone {
+            font-size: 13px;
+            opacity: 0.8;
+            background: rgba(255,255,255,0.15);
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        /* Balance Card */
+        .balance-card {
+            background: #fff;
+            color: #000;
+            border-radius: 16px;
+            padding: 20px;
+            margin: -25px 15px 20px 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid #eaeaea;
+        }
+
+        .balance-title {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .balance-amount {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 8px 0 15px 0;
+        }
+
+        /* Action Buttons */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .btn-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-dark {
+            background: #000;
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: #fff;
+            color: #000;
+            border: 1px solid #000;
+        }
+
+        .container {
+            padding: 0 15px;
+        }
+
+        /* Cartes Réseaux Sociaux / Communautés */
+        .section-title {
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 20px 0 10px 0;
+            color: #111;
+        }
+
+        .community-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .community-card {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: #000;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .community-card:active {
+            transform: scale(0.98);
+        }
+
+        .community-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .community-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #0088cc;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .community-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .community-info p {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .arrow-icon {
+            font-size: 14px;
+            color: #999;
+        }
+
+        /* Grille des statistiques */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border: 1px solid #eaeaea;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .stat-card i {
+            font-size: 16px;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #777;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        /* Navigation inférieure */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid #e0e0e0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #888;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            color: #000;
+            font-weight: 800;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- En-tête Haut -->
+    <div class="top-header">
+        <div class="header-nav">
+            <span class="brand-title">SAFE ALTERPLEX</span>
+            <span class="user-phone" id="userAccountDisplay">+243 ...</span>
+        </div>
+    </div>
+
+    <!-- Carte Solde -->
+    <div class="balance-card">
+        <div class="balance-title">Solde Total Disponible</div>
+        <div class="balance-amount" id="userBalance">0 FC</div>
+        <div class="action-grid">
+            <a href="recharge.html" class="btn-action btn-dark">
+                <i class="fas fa-plus-circle"></i> Recharger
+            </a>
+            <a href="retrait.html" class="btn-action btn-outline">
+                <i class="fas fa-arrow-down-long"></i> Retirer
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- Section Communauté Telegram -->
+        <div class="section-title">Canal Officiel</div>
+        <div class="community-container">
+            <!-- Lien Groupe Telegram -->
+            <a href="https://t.me/+G_u3G8TXDztkZGVk" target="_blank" class="community-card">
+                <div class="community-left">
+                    <div class="community-icon">
+                        <i class="fab fa-telegram-plane"></i>
+                    </div>
+                    <div class="community-info">
+                        <h4>Groupe Telegram Officiel</h4>
+                        <p>Rejoignez la communauté & annonces</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right arrow-icon"></i>
+            </a>
+        </div>
+
+        <!-- Statistiques de Compte -->
+        <div class="section-title">Aperçu du compte</div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-chart-line"></i>
+                <div class="stat-label">Revenus du Jour</div>
+                <div class="stat-value" id="todayIncome">0 FC</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-layer-group"></i>
+                <div class="stat-label">Projets Actifs</div>
+                <div class="stat-value" id="activeProjects">0 VIP</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <div class="stat-label">Équipe Totale</div>
+                <div class="stat-value" id="teamMembers">0 membre(s)</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-hand-holding-dollar"></i>
+                <div class="stat-label">Gains d'Équipe</div>
+                <div class="stat-value" id="teamGains">0 FC</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navigation du Bas -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item active">
+            <i class="fas fa-house nav-icon"></i>Accueil
+        </a>
+        <a href="produit.html" class="nav-item">
+            <i class="fas fa-bolt nav-icon"></i>Énergie
+        </a>
+        <a href="equipe.html" class="nav-item">
+            <i class="fas fa-user-group nav-icon"></i>Équipe
+        </a>
+        <a href="profil.html" class="nav-item">
+            <i class="fas fa-user nav-icon"></i>Moi
+        </a>
+    </nav>
+
+    <script>
+        const dbUrl = "https://canal-e4274-default-rtdb.firebaseio.com";
+        const userPhone = localStorage.getItem('userPhone');
+
+        if (!userPhone) {
+            window.location.href = 'index.html';
+        }
+
+        async function loadDashboardData() {
+            // Afficher le numéro d'utilisateur dans le header
+            document.getElementById('userAccountDisplay').innerText = `+243 ${userPhone}`;
+
+            try {
+                // Charger les données de l'utilisateur
+                const userRes = await fetch(`${dbUrl}/users/${userPhone}.json`);
+                const userData = await userRes.json();
+
+                if (userData) {
+                    const balance = userData.balance || 0;
+                    document.getElementById('userBalance').innerText = balance.toLocaleString('fr-FR') + " FC";
+                    
+                    const lv1Gains = userData.totalGainsLV1 || 0;
+                    const lv2Gains = userData.totalGainsLV2 || 0;
+                    const lv3Gains = userData.totalGainsLV3 || 0;
+                    const totalTeamGains = lv1Gains + lv2Gains + lv3Gains;
+                    document.getElementById('teamGains').innerText = totalTeamGains.toLocaleString('fr-FR') + " FC";
+                }
+
+                // Charger les investissements actifs
+                const purchasesRes = await fetch(`${dbUrl}/purchases/${userPhone}.json`);
+                const purchases = await purchasesRes.json();
+
+                if (purchases) {
+                    const activeCount = Object.keys(purchases).length;
+                    document.getElementById('activeProjects').innerText = activeCount + " Projet(s)";
+                }
+
+            } catch (error) {
+                console.error("Erreur de chargement du tableau de bord :", error);
+            }
+        }
+
+        window.onload = loadDashboardData;
+    </script>
+
+</body>
+</html>
