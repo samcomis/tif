@@ -444,7 +444,7 @@
                 }
 
                 // 2. Vérification si l'utilisateur a déjà investi
-                const invRes = await fetch(`${dbUrl}/investments/${userPhone}.json`);
+                const invRes = await fetch(`${dbUrl}/purchases/${userPhone}.json`);
                 const invData = await invRes.json();
 
                 if (invData && Object.keys(invData).length > 0) {
