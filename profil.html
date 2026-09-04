@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Safe Alterplex énergie - Mon Profil</title>
+    <title>Samsung - Mon Profil</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -19,9 +19,9 @@
             padding-bottom: 90px;
         }
 
-        /* En-tête du profil */
+        /* En-tête Samsung */
         .profile-header {
-            background-color: #000;
+            background-color: #1428A0;
             color: #fff;
             padding: 30px 20px 25px 20px;
             text-align: center;
@@ -29,18 +29,27 @@
             border-bottom-right-radius: 24px;
         }
 
+        .brand-tag {
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+
         .user-avatar {
             width: 70px;
             height: 70px;
             background: #fff;
-            color: #000;
+            color: #1428A0;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 32px;
             margin: 0 auto 12px auto;
-            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
 
         .user-phone {
@@ -51,7 +60,7 @@
 
         .user-role {
             font-size: 12px;
-            color: #aaa;
+            color: #e0e0e0;
             margin-top: 4px;
         }
 
@@ -82,7 +91,7 @@
         .balance-amount {
             font-size: 26px;
             font-weight: 900;
-            color: #000;
+            color: #1428A0;
         }
 
         .quick-actions {
@@ -105,14 +114,14 @@
         }
 
         .btn-recharge {
-            background: #000;
+            background: #1428A0;
             color: #fff;
         }
 
         .btn-withdraw {
-            background: #f0f0f0;
-            color: #000;
-            border: 1px solid #ddd;
+            background: #f0f4ff;
+            color: #1428A0;
+            border: 1px solid #1428A0;
         }
 
         .btn-action:active {
@@ -126,12 +135,13 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin: 20px 0 12px 0;
+            color: #1428A0;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* Cartes des Produits Détenus */
+        /* Cartes des Produits Détenus avec Image */
         .owned-products-list {
             display: flex;
             flex-direction: column;
@@ -144,7 +154,7 @@
             border-radius: 14px;
             padding: 16px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-            border-left: 5px solid #000;
+            border-left: 5px solid #1428A0;
         }
 
         .owned-header {
@@ -152,13 +162,29 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid #f0f0f0;
-            padding-bottom: 8px;
-            margin-bottom: 10px;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .owned-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .owned-img {
+            width: 55px;
+            height: 55px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            background: #fafafa;
         }
 
         .owned-title {
             font-size: 14px;
             font-weight: 800;
+            color: #111;
         }
 
         .owned-status {
@@ -166,14 +192,15 @@
             font-weight: 700;
             background: #e6f4ea;
             color: #137333;
-            padding: 3px 8px;
+            padding: 4px 8px;
             border-radius: 10px;
+            white-space: nowrap;
         }
 
         .owned-details {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
+            gap: 10px;
         }
 
         .owned-item {
@@ -189,7 +216,7 @@
         .owned-value {
             font-size: 13px;
             font-weight: 800;
-            color: #000;
+            color: #1428A0;
         }
 
         .empty-owned {
@@ -205,7 +232,7 @@
         .empty-owned a {
             display: inline-block;
             margin-top: 10px;
-            color: #000;
+            color: #1428A0;
             font-weight: 800;
             text-decoration: underline;
         }
@@ -239,6 +266,7 @@
             width: 20px;
             margin-right: 10px;
             font-size: 15px;
+            color: #1428A0;
         }
 
         .logout-btn {
@@ -281,7 +309,7 @@
         }
 
         .nav-item.active {
-            color: #000;
+            color: #1428A0;
             font-weight: 800;
         }
 
@@ -296,11 +324,12 @@
 
     <!-- En-tête Profil -->
     <div class="profile-header">
+        <div class="brand-tag">SAMSUNG</div>
         <div class="user-avatar">
             <i class="fas fa-user"></i>
         </div>
         <div class="user-phone" id="displayUserPhone">+243 000 000 000</div>
-        <div class="user-role">Investisseur Safe Alterplex</div>
+        <div class="user-role">Partenaire Samsung VIP</div>
     </div>
 
     <div class="container">
@@ -321,12 +350,12 @@
             </div>
         </div>
 
-        <!-- Section Produits Détenus (Mes Investissements) -->
+        <!-- Section Équipements Achetes (Mes Équipements Samsung) -->
         <div class="section-title">
-            <i class="fas fa-bolt"></i> Mes Produits Détenus
+            <i class="fas fa-mobile-screen-button"></i> Mes Équipements Actifs
         </div>
         <div class="owned-products-list" id="ownedProductsContainer">
-            <div class="empty-owned">Chargement de vos produits en cours...</div>
+            <div class="empty-owned">Chargement de vos équipements...</div>
         </div>
 
         <!-- Options du Compte -->
@@ -361,7 +390,7 @@
             <i class="fas fa-house nav-icon"></i>Accueil
         </a>
         <a href="produit.html" class="nav-item">
-            <i class="fas fa-bolt nav-icon"></i>Énergie
+            <i class="fas fa-bolt nav-icon"></i>Produits
         </a>
         <a href="equipe.html" class="nav-item">
             <i class="fas fa-user-group nav-icon"></i>Équipe
@@ -373,14 +402,18 @@
 
     <script>
         const dbUrl = "https://canal-e4274-default-rtdb.firebaseio.com";
-        const userPhone = localStorage.getItem('userPhone') || '890000000';
+        const userPhone = localStorage.getItem('userPhone');
 
-        // Charger les informations du profil et les produits
+        if (!userPhone) {
+            window.location.href = 'index.html';
+        }
+
+        // Charger les informations du profil et les produits achetés
         async function loadProfileData() {
             document.getElementById('displayUserPhone').innerText = "+243 " + userPhone;
 
             try {
-                // 1. Récupération des infos utilisateur (Solde)
+                // 1. Solde utilisateur
                 const userRes = await fetch(`${dbUrl}/users/${userPhone}.json`);
                 const userData = await userRes.json();
 
@@ -389,7 +422,7 @@
                     document.getElementById('userBalance').innerText = balance.toLocaleString('fr-FR') + " FC";
                 }
 
-                // 2. Récupération des produits achetés / détenus
+                // 2. Équipements achetés par l'utilisateur
                 const purchasesRes = await fetch(`${dbUrl}/purchases/${userPhone}.json`);
                 const purchasesData = await purchasesRes.json();
 
@@ -400,15 +433,15 @@
             }
         }
 
-        // Affichage dynamique des cartes achetées par l'utilisateur
+        // Affichage des cartes d'équipements achetés avec image produit
         function renderOwnedProducts(purchases) {
             const container = document.getElementById('ownedProductsContainer');
 
             if (!purchases || Object.keys(purchases).length === 0) {
                 container.innerHTML = `
                     <div class="empty-owned">
-                        Vous ne détenez aucun projet actif pour le moment.<br>
-                        <a href="produit.html">Découvrir nos offres d'investissement</a>
+                        Vous ne détentez aucun équipement actif pour le moment.<br>
+                        <a href="produit.html">Parcourir le catalogue Samsung</a>
                     </div>
                 `;
                 return;
@@ -416,46 +449,48 @@
 
             container.innerHTML = "";
 
-            // Parcourir tous les achats
             Object.keys(purchases).forEach(key => {
                 const item = purchases[key];
                 
-                // Formater la date d'achat
                 const purchaseDate = item.purchasedAt ? new Date(item.purchasedAt).toLocaleDateString('fr-FR') : 'Récemment';
+                // Image du produit par défaut si non spécifiée lors de l'achat
+                const imageSrc = item.productImage || 'https://via.placeholder.com/100?text=Samsung';
 
                 container.innerHTML += `
                     <div class="owned-card">
                         <div class="owned-header">
-                            <span class="owned-title">${item.productName}</span>
+                            <div class="owned-title-wrapper">
+                                <img src="${imageSrc}" alt="${item.productName}" class="owned-img" onerror="this.src='https://via.placeholder.com/100?text=Samsung'">
+                                <div>
+                                    <div class="owned-title">${item.productName}</div>
+                                    <div style="font-size: 10px; color: #888; margin-top: 2px;">Activé le : ${purchaseDate}</div>
+                                </div>
+                            </div>
                             <span class="owned-status"><i class="fas fa-circle-check"></i> Actif</span>
                         </div>
                         <div class="owned-details">
                             <div class="owned-item">
-                                <span class="owned-label">Investissement</span>
+                                <span class="owned-label">Prix d'acquisition</span>
                                 <span class="owned-value">${(item.price || 0).toLocaleString('fr-FR')} FC</span>
                             </div>
                             <div class="owned-item">
-                                <span class="owned-label">Revenu / Jour</span>
+                                <span class="owned-label">Revenu journalier</span>
                                 <span class="owned-value">${(item.dailyIncome || 0).toLocaleString('fr-FR')} FC/j</span>
                             </div>
                             <div class="owned-item">
-                                <span class="owned-label">Durée totale</span>
+                                <span class="owned-label">Durée de validité</span>
                                 <span class="owned-value">${item.durationDays || 0} Jours</span>
                             </div>
                             <div class="owned-item">
-                                <span class="owned-label">Total projeté</span>
+                                <span class="owned-label">Gain total estimé</span>
                                 <span class="owned-value">${(item.totalProfit || 0).toLocaleString('fr-FR')} FC</span>
                             </div>
-                        </div>
-                        <div style="font-size: 10px; color: #888; margin-top: 10px; text-align: right;">
-                            Activé le : ${purchaseDate}
                         </div>
                     </div>
                 `;
             });
         }
 
-        // Déconnexion
         function logout() {
             if (confirm("Voulez-vous vraiment vous déconnecter ?")) {
                 localStorage.removeItem('userPhone');
