@@ -50,13 +50,36 @@
             border-radius: 12px;
         }
 
+        /* Slider d'images (Carrousel) */
+        .slider-container {
+            width: calc(100% - 30px);
+            margin: 15px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .slider-wrapper {
+            display: flex;
+            width: 400%; /* 4 images = 400% */
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slider-wrapper img {
+            width: 25%; /* 100% / 4 */
+            object-fit: cover;
+            border-radius: 12px;
+            display: block;
+        }
+
         /* Balance Card */
         .balance-card {
             background: #fff;
             color: #000;
             border-radius: 16px;
             padding: 20px;
-            margin: -25px 15px 20px 15px;
+            margin: 10px 15px 20px 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             border: 1px solid #eaeaea;
         }
@@ -241,15 +264,150 @@
             display: block;
             margin-bottom: 3px;
         }
+
+        /* Modale d'annonce (Popup) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #fff;
+            width: 90%;
+            max-width: 350px;
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .modal-brand {
+            font-size: 18px;
+            font-weight: 900;
+            color: #cc0000; /* Rouge stylisé */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .modal-desc {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .modal-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            color: #333;
+            transition: background 0.2s;
+        }
+
+        .modal-btn i.fa-telegram-plane { color: #0088cc; }
+        .modal-btn i.fa-whatsapp { color: #25D366; }
+
+        .modal-btn.btn-ok {
+            background: #f5f5f5;
+            border: none;
+            margin-top: 5px;
+            margin-bottom: 0;
+            color: #000;
+        }
+
+        .modal-btn:active {
+            background: #eee;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Modale d'Annonce -->
+    <div class="modal-overlay" id="promoModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div class="modal-brand">SAFE ALTERPLEX</div>
+            <div class="modal-title">🚀 Invitez vos amis et gagnez des commissions facilement !</div>
+            <div class="modal-desc">
+                Chaque fois qu'un ami que vous avez invité effectue son premier achat, vous recevez une commission. Taux : 30% - 2% - 1%
+            </div>
+            
+            <a href="https://t.me/+G_u3G8TXDztkZGVk" target="_blank" class="modal-btn">
+                <i class="fab fa-telegram-plane"></i> Rejoindre le canal Telegram
+            </a>
+            <a href="https://chat.whatsapp.com/LNAr3Eg0TCp2BLrsdmney1?mode=gi_t" target="_blank" class="modal-btn">
+                <i class="fab fa-whatsapp"></i> Rejoindre le groupe WhatsApp
+            </a>
+            <button class="modal-btn btn-ok" onclick="closeModal()">OK</button>
+        </div>
+    </div>
 
     <!-- En-tête Haut -->
     <div class="top-header">
         <div class="header-nav">
             <span class="brand-title">SAFE ALTERPLEX</span>
             <span class="user-phone" id="userAccountDisplay">+243 ...</span>
+        </div>
+    </div>
+
+    <!-- Carrousel d'images -->
+    <div class="slider-container">
+        <div class="slider-wrapper" id="imageSlider">
+            <img src="IMG_8305.png" alt="Annonce 1">
+            <img src="IMG_8307.jpeg" alt="Annonce 2">
+            <img src="IMG_8308.jpeg" alt="Annonce 3">
+            <img src="IMG_8309.jpeg" alt="Annonce 4">
         </div>
     </div>
 
@@ -272,7 +430,6 @@
         <!-- Section Communauté Telegram -->
         <div class="section-title">Canal Officiel</div>
         <div class="community-container">
-            <!-- Lien Groupe Telegram -->
             <a href="https://t.me/+G_u3G8TXDztkZGVk" target="_blank" class="community-card">
                 <div class="community-left">
                     <div class="community-icon">
@@ -338,12 +495,42 @@
             window.location.href = 'index.html';
         }
 
+        // --- Logique du Slider (Carrousel) ---
+        let currentSlide = 0;
+        const totalSlides = 4;
+        
+        function moveSlider() {
+            const slider = document.getElementById('imageSlider');
+            currentSlide++;
+            if (currentSlide >= totalSlides) {
+                currentSlide = 0;
+            }
+            slider.style.transform = `translateX(-${currentSlide * 25}%)`;
+        }
+        
+        // Défilement toutes les 5 secondes (5000 millisecondes)
+        setInterval(moveSlider, 5000);
+
+        // --- Logique de la Modale (Popup) ---
+        function openModal() {
+            document.getElementById('promoModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('promoModal').classList.remove('active');
+        }
+
+        // Afficher la modale au chargement de la page
+        window.addEventListener('DOMContentLoaded', () => {
+            // Optionnel : tu peux utiliser sessionStorage pour ne l'afficher qu'une fois par session
+            setTimeout(openModal, 500); // Léger délai de 500ms pour un effet plus fluide
+        });
+
+        // --- Logique Firebase du Dashboard ---
         async function loadDashboardData() {
-            // Afficher le numéro d'utilisateur dans le header
             document.getElementById('userAccountDisplay').innerText = `+243 ${userPhone}`;
 
             try {
-                // Charger les données de l'utilisateur
                 const userRes = await fetch(`${dbUrl}/users/${userPhone}.json`);
                 const userData = await userRes.json();
 
@@ -358,7 +545,6 @@
                     document.getElementById('teamGains').innerText = totalTeamGains.toLocaleString('fr-FR') + " FC";
                 }
 
-                // Charger les investissements actifs
                 const purchasesRes = await fetch(`${dbUrl}/purchases/${userPhone}.json`);
                 const purchases = await purchasesRes.json();
 
