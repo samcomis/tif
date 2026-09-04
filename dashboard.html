@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Safe Alterplex énergie - Tableau de bord</title>
+    <title>Samsung - Tableau de bord</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -21,7 +21,7 @@
 
         /* En-tête */
         .top-header {
-            background-color: #000;
+            background-color: #1428A0; /* Bleu Samsung */
             color: #fff;
             padding: 20px 15px 30px 15px;
             border-bottom-left-radius: 20px;
@@ -36,7 +36,7 @@
         }
 
         .brand-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 900;
             letter-spacing: 1.5px;
             text-transform: uppercase;
@@ -44,8 +44,8 @@
 
         .user-phone {
             font-size: 13px;
-            opacity: 0.8;
-            background: rgba(255,255,255,0.15);
+            opacity: 0.9;
+            background: rgba(255,255,255,0.2);
             padding: 4px 10px;
             border-radius: 12px;
         }
@@ -67,7 +67,7 @@
         }
 
         .slider-wrapper img {
-            width: 25%; /* 100% / 4 */
+            width: 25%;
             object-fit: cover;
             border-radius: 12px;
             display: block;
@@ -96,6 +96,7 @@
             font-size: 28px;
             font-weight: 800;
             margin: 8px 0 15px 0;
+            color: #1428A0;
         }
 
         /* Action Buttons */
@@ -119,14 +120,14 @@
         }
 
         .btn-dark {
-            background: #000;
+            background: #1428A0;
             color: #fff;
         }
 
         .btn-outline {
             background: #fff;
-            color: #000;
-            border: 1px solid #000;
+            color: #1428A0;
+            border: 1px solid #1428A0;
         }
 
         .container {
@@ -217,7 +218,7 @@
 
         .stat-card i {
             font-size: 16px;
-            color: #000;
+            color: #1428A0;
             margin-bottom: 8px;
         }
 
@@ -255,7 +256,7 @@
         }
 
         .nav-item.active {
-            color: #000;
+            color: #1428A0;
             font-weight: 800;
         }
 
@@ -315,11 +316,11 @@
         }
 
         .modal-brand {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 900;
-            color: #cc0000; /* Rouge stylisé */
+            color: #1428A0;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             margin-bottom: 15px;
         }
 
@@ -377,7 +378,7 @@
     <div class="modal-overlay" id="promoModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">×</button>
-            <div class="modal-brand">SAFE ALTERPLEX</div>
+            <div class="modal-brand">SAMSUNG</div>
             <div class="modal-title">🚀 Invitez vos amis et gagnez des commissions facilement !</div>
             <div class="modal-desc">
                 Chaque fois qu'un ami que vous avez invité effectue son premier achat, vous recevez une commission. Taux : 30% - 2% - 1%
@@ -396,7 +397,7 @@
     <!-- En-tête Haut -->
     <div class="top-header">
         <div class="header-nav">
-            <span class="brand-title">SAFE ALTERPLEX</span>
+            <span class="brand-title">SAMSUNG</span>
             <span class="user-phone" id="userAccountDisplay">+243 ...</span>
         </div>
     </div>
@@ -477,7 +478,7 @@
             <i class="fas fa-house nav-icon"></i>Accueil
         </a>
         <a href="produit.html" class="nav-item">
-            <i class="fas fa-bolt nav-icon"></i>Énergie
+            <i class="fas fa-bolt nav-icon"></i>Produits
         </a>
         <a href="equipe.html" class="nav-item">
             <i class="fas fa-user-group nav-icon"></i>Équipe
@@ -508,7 +509,6 @@
             slider.style.transform = `translateX(-${currentSlide * 25}%)`;
         }
         
-        // Défilement toutes les 5 secondes (5000 millisecondes)
         setInterval(moveSlider, 5000);
 
         // --- Logique de la Modale (Popup) ---
@@ -520,10 +520,8 @@
             document.getElementById('promoModal').classList.remove('active');
         }
 
-        // Afficher la modale au chargement de la page
         window.addEventListener('DOMContentLoaded', () => {
-            // Optionnel : tu peux utiliser sessionStorage pour ne l'afficher qu'une fois par session
-            setTimeout(openModal, 500); // Léger délai de 500ms pour un effet plus fluide
+            setTimeout(openModal, 500);
         });
 
         // --- Logique Firebase du Dashboard ---
