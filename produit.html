@@ -91,6 +91,7 @@
             object-fit: cover;
             border-radius: 12px;
             border: 1px solid #f0f0f0;
+            background: #fafafa;
         }
 
         .product-header-info {
@@ -273,15 +274,15 @@
             window.location.href = 'index.html';
         }
 
-        // Grille mise à jour des 7 VIPs (Ancien VIP 1 supprimé, images associées)
+        // Catalogue associé aux 7 images exactes demandées
         const products = [
-            { id: 1, name: "VIP 1", price: 20000, dailyIncome: 1500, durationDays: 20, totalProfit: 30000, img: "IMG_8305.png" },
-            { id: 2, name: "VIP 2", price: 80000, dailyIncome: 10000, durationDays: 10, totalProfit: 100000, img: "IMG_8307.jpeg" },
-            { id: 3, name: "VIP 3", price: 150000, dailyIncome: 11000, durationDays: 20, totalProfit: 220000, img: "IMG_8308.jpeg" },
-            { id: 4, name: "VIP 4", price: 300000, dailyIncome: 23000, durationDays: 20, totalProfit: 460000, img: "IMG_8309.jpeg" },
-            { id: 5, name: "VIP 5", price: 500000, dailyIncome: 62300, durationDays: 10, totalProfit: 623000, img: "IMG_8305.png" },
-            { id: 6, name: "VIP 6", price: 700000, dailyIncome: 100000, durationDays: 10, totalProfit: 1000000, img: "IMG_8307.jpeg" },
-            { id: 7, name: "VIP 7", price: 1500000, dailyIncome: 200000, durationDays: 12, totalProfit: 2400000, img: "IMG_8308.jpeg" }
+            { id: 1, name: "VIP 1", price: 20000, dailyIncome: 1500, durationDays: 20, totalProfit: 30000, img: "IMG_8298.jpeg" },
+            { id: 2, name: "VIP 2", price: 80000, dailyIncome: 10000, durationDays: 10, totalProfit: 100000, img: "IMG_8300.jpeg" },
+            { id: 3, name: "VIP 3", price: 150000, dailyIncome: 11000, durationDays: 20, totalProfit: 220000, img: "IMG_8301.jpeg" },
+            { id: 4, name: "VIP 4", price: 300000, dailyIncome: 23000, durationDays: 20, totalProfit: 460000, img: "IMG_8302.jpeg" },
+            { id: 5, name: "VIP 5", price: 500000, dailyIncome: 62300, durationDays: 10, totalProfit: 623000, img: "IMG_8303.jpeg" },
+            { id: 6, name: "VIP 6", price: 700000, dailyIncome: 100000, durationDays: 10, totalProfit: 1000000, img: "IMG_8304.jpeg" },
+            { id: 7, name: "VIP 7", price: 1500000, dailyIncome: 200000, durationDays: 12, totalProfit: 2400000, img: "IMG_8315.jpeg" }
         ];
 
         // 1. Affichage du catalogue des produits VIP
@@ -293,7 +294,7 @@
                 container.innerHTML += `
                     <div class="product-card">
                         <div class="card-top">
-                            <img src="${p.img}" alt="${p.name}" class="product-img" onerror="this.src='https://via.placeholder.com/90'">
+                            <img src="${p.img}" alt="${p.name}" class="product-img" onerror="this.src='https://via.placeholder.com/90?text=Samsung'">
                             <div class="product-header-info">
                                 <span class="card-badge">${p.name}</span>
                                 <span class="card-duration"><i class="far fa-calendar-alt"></i> ${p.durationDays} Jours</span>
@@ -345,14 +346,13 @@
                     const diffMs = now - lastPayout;
                     const diffHours = diffMs / (1000 * 60 * 60);
 
-                    // Vérifier si 24h se sont écoulées
                     const isReady = diffHours >= 24;
                     const hoursLeft = isReady ? 0 : Math.ceil(24 - diffHours);
 
                     container.innerHTML += `
                         <div class="my-product-card">
                             <div class="card-top">
-                                <img src="${item.img || 'https://via.placeholder.com/90'}" class="product-img" alt="${item.productName}">
+                                <img src="${item.img || 'https://via.placeholder.com/90?text=Samsung'}" class="product-img" alt="${item.productName}" onerror="this.src='https://via.placeholder.com/90?text=Samsung'">
                                 <div class="product-header-info">
                                     <span class="card-badge">${item.productName}</span>
                                     <span class="card-duration">Revenu: ${item.dailyIncome.toLocaleString('fr-FR')} FC/j</span>
@@ -377,7 +377,6 @@
         // 3. Récolte manuelle du revenu après 24 heures
         async function claimIncome(purchaseKey, income) {
             try {
-                // Récupération des infos utilisateur
                 const userRes = await fetch(`${dbUrl}/users/${userPhone}.json`);
                 const user = await userRes.json();
 
@@ -385,13 +384,11 @@
 
                 const newBalance = (user.balance || 0) + income;
 
-                // Crédit du solde
                 await fetch(`${dbUrl}/users/${userPhone}/balance.json`, {
                     method: 'PUT',
                     body: JSON.stringify(newBalance)
                 });
 
-                // Mettre à jour la date du dernier paiement
                 await fetch(`${dbUrl}/purchases/${userPhone}/${purchaseKey}/lastPayoutAt.json`, {
                     method: 'PUT',
                     body: JSON.stringify(new Date().toISOString())
@@ -427,14 +424,12 @@
                     return;
                 }
 
-                // Déduction du montant investi
                 const newBalance = user.balance - product.price;
                 await fetch(`${dbUrl}/users/${userPhone}/balance.json`, {
                     method: 'PUT',
                     body: JSON.stringify(newBalance)
                 });
 
-                // Enregistrement de l'achat avec l'heure actuelle
                 const purchaseData = {
                     productId: product.id,
                     productName: product.name,
@@ -452,7 +447,6 @@
                     body: JSON.stringify(purchaseData)
                 });
 
-                // Commission envoyée directement au solde du parrain (30%, 2%, 1%)
                 await distributeCommissions(user.referredBy, product.price);
 
                 alert(`Achat du ${product.name} réussi avec succès !`);
@@ -468,7 +462,7 @@
         async function distributeCommissions(uplineCode, investmentAmount) {
             if (!uplineCode) return;
 
-            const rates = [0.30, 0.02, 0.01]; // 30% Niv 1, 2% Niv 2, 1% Niv 3
+            const rates = [0.30, 0.02, 0.01]; 
             let currentRefCode = uplineCode;
 
             for (let level = 0; level < 3; level++) {
@@ -494,13 +488,11 @@
                     const fieldGainsName = `totalGainsLV${level + 1}`;
                     const currentLevelGains = sponsorData[fieldGainsName] || 0;
 
-                    // Crédit de la commission directement au SOLDE du parrain
                     await fetch(`${dbUrl}/users/${sponsorPhone}/balance.json`, {
                         method: 'PUT',
                         body: JSON.stringify(currentBalance + commission)
                     });
 
-                    // Suivi des gains d'équipe
                     await fetch(`${dbUrl}/users/${sponsorPhone}/${fieldGainsName}.json`, {
                         method: 'PUT',
                         body: JSON.stringify(currentLevelGains + commission)
