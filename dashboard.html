@@ -50,26 +50,30 @@
             border-radius: 12px;
         }
 
-        /* Slider d'images (Carrousel) */
+        /* Slider d'images (Carrousel corrigé et harmonisé) */
         .slider-container {
             width: calc(100% - 30px);
+            height: 170px;
             margin: 15px auto;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             position: relative;
+            background: #fff;
+            border: 1px solid #eaeaea;
         }
 
         .slider-wrapper {
             display: flex;
             width: 400%; /* 4 images = 400% */
+            height: 100%;
             transition: transform 0.5s ease-in-out;
         }
 
         .slider-wrapper img {
             width: 25%;
+            height: 100%;
             object-fit: cover;
-            border-radius: 12px;
             display: block;
         }
 
@@ -245,6 +249,7 @@
             padding: 12px 0;
             border-top: 1px solid #e0e0e0;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+            z-index: 100;
         }
 
         .nav-item {
@@ -405,10 +410,10 @@
     <!-- Carrousel d'images -->
     <div class="slider-container">
         <div class="slider-wrapper" id="imageSlider">
-            <img src="IMG_8305.png" alt="Annonce 1">
-            <img src="IMG_8307.jpeg" alt="Annonce 2">
-            <img src="IMG_8308.jpeg" alt="Annonce 3">
-            <img src="IMG_8309.jpeg" alt="Annonce 4">
+            <img src="IMG_8305.png" alt="Annonce 1" onerror="this.src='https://via.placeholder.com/400x170?text=Samsung+1'">
+            <img src="IMG_8307.jpeg" alt="Annonce 2" onerror="this.src='https://via.placeholder.com/400x170?text=Samsung+2'">
+            <img src="IMG_8308.jpeg" alt="Annonce 3" onerror="this.src='https://via.placeholder.com/400x170?text=Samsung+3'">
+            <img src="IMG_8309.jpeg" alt="Annonce 4" onerror="this.src='https://via.placeholder.com/400x170?text=Samsung+4'">
         </div>
     </div>
 
