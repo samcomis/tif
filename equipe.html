@@ -19,7 +19,7 @@
             padding-bottom: 90px;
         }
 
-        /* En-tête Samsung */
+        /* En-tête Samsung (Bleu Samsung) */
         .top-header {
             background-color: #1428A0;
             color: #fff;
@@ -68,7 +68,7 @@
         }
 
         .code-box {
-            background: #f0f4ff;
+            background: #eef2ff;
             border: 1px dashed #1428A0;
             border-radius: 10px;
             padding: 12px;
@@ -295,8 +295,8 @@
         }
 
         .badge-active {
-            background: #e6f4ea;
-            color: #137333;
+            background: #eef2ff;
+            color: #1428A0;
         }
 
         .empty-state {
@@ -318,6 +318,7 @@
             padding: 12px 0;
             border-top: 1px solid #e0e0e0;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+            z-index: 100;
         }
 
         .nav-item {
@@ -342,7 +343,6 @@
 </head>
 <body>
 
-    <!-- En-tête -->
     <div class="top-header">
         <div class="brand-title">SAMSUNG</div>
         <div class="page-subtitle">Programme d'Affiliation & Équipe</div>
@@ -350,7 +350,6 @@
 
     <div class="container">
 
-        <!-- Carte Parrainage & Lien -->
         <div class="invite-card">
             <div class="invite-title">
                 <i class="fas fa-share-nodes"></i> Mon Code d'Invitation
@@ -372,7 +371,6 @@
             </button>
         </div>
 
-        <!-- Synthèse globale -->
         <div class="summary-grid">
             <div class="summary-card">
                 <i class="fas fa-users"></i>
@@ -381,16 +379,14 @@
             </div>
             <div class="summary-card">
                 <i class="fas fa-sack-dollar"></i>
-                <div class="summary-label">Commissions Réçues</div>
+                <div class="summary-label">Commissions Reçues</div>
                 <div class="summary-value" id="totalTeamGains">0 FC</div>
             </div>
         </div>
 
-        <!-- Structure des 3 Niveaux -->
         <div class="section-title"><i class="fas fa-sitemap"></i> Niveaux de Parrainage</div>
         <div class="levels-container">
 
-            <!-- Niveau 1 -->
             <div class="level-card">
                 <div class="level-header">
                     <span class="level-name">
@@ -410,7 +406,6 @@
                 </div>
             </div>
 
-            <!-- Niveau 2 -->
             <div class="level-card">
                 <div class="level-header">
                     <span class="level-name">
@@ -430,7 +425,6 @@
                 </div>
             </div>
 
-            <!-- Niveau 3 -->
             <div class="level-card">
                 <div class="level-header">
                     <span class="level-name">
@@ -452,7 +446,6 @@
 
         </div>
 
-        <!-- Historique de l'Équipe -->
         <div class="section-title" style="margin-top: 25px;"><i class="fas fa-history"></i> Membres par Niveau</div>
         <div class="history-card">
             <div class="history-tabs">
@@ -468,7 +461,6 @@
 
     </div>
 
-    <!-- Navigation inférieure -->
     <nav class="bottom-nav">
         <a href="dashboard.html" class="nav-item">
             <i class="fas fa-house nav-icon"></i>Accueil
@@ -518,13 +510,13 @@
         async function loadTeamData() {
             try {
                 // Fetch utilisateur actuel
-                const userRes = await fetch(`${dbUrl}/users/${userPhone}.json`);
+                const userRes = await fetch(`${dbUrl}/users/${encodeURIComponent(userPhone)}.json`);
                 const userData = await userRes.json();
 
                 if (userData) {
                     if (!userData.inviteCode) {
                         userInviteCode = generateLowercaseCode();
-                        await fetch(`${dbUrl}/users/${userPhone}/inviteCode.json`, {
+                        await fetch(`${dbUrl}/users/${encodeURIComponent(userPhone)}/inviteCode.json`, {
                             method: 'PUT',
                             body: JSON.stringify(userInviteCode)
                         });
@@ -532,7 +524,8 @@
                         userInviteCode = userData.inviteCode.toLowerCase();
                     }
                     
-                    fullInviteLink = `${window.location.origin}/index.html?ref=${userInviteCode}`;
+                    // Intégration de l'URL exacte de votre plateforme
+                    fullInviteLink = `https://samcomis.github.io/tif/index.html?ref=${userInviteCode}`;
 
                     document.getElementById('referralCode').innerText = userInviteCode;
                     document.getElementById('referralLink').innerText = fullInviteLink;
