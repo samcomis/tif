@@ -19,9 +19,9 @@
             padding-bottom: 90px;
         }
 
-        /* En-tête */
+        /* En-tête (Bleu Samsung) */
         .top-header {
-            background-color: #000;
+            background-color: #1428A0;
             color: #fff;
             padding: 20px 15px;
             text-align: center;
@@ -43,6 +43,7 @@
             font-size: 16px;
             font-weight: 800;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .container {
@@ -57,6 +58,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            color: #1428A0;
         }
 
         /* Liste des transactions */
@@ -86,7 +88,7 @@
         .withdraw-amount {
             font-size: 16px;
             font-weight: 900;
-            color: #000;
+            color: #1428A0;
         }
 
         /* Badges de Statuts */
@@ -101,18 +103,18 @@
         }
 
         .status-pending {
-            background: #fef7e0;
-            color: #b06000;
+            background: #eef2ff;
+            color: #1428A0;
         }
 
         .status-approved {
-            background: #e6f4ea;
-            color: #137333;
+            background: #d4edda;
+            color: #155724;
         }
 
         .status-rejected {
-            background: #fce8e6;
-            color: #c5221f;
+            background: #f8d7da;
+            color: #721c24;
         }
 
         /* Détails de la transaction */
@@ -159,6 +161,10 @@
             font-size: 13px;
         }
 
+        .empty-state i {
+            color: #1428A0;
+        }
+
         /* Navigation inférieure */
         .bottom-nav {
             position: fixed;
@@ -171,6 +177,7 @@
             padding: 12px 0;
             border-top: 1px solid #e0e0e0;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+            z-index: 100;
         }
 
         .nav-item {
@@ -182,7 +189,7 @@
         }
 
         .nav-item.active {
-            color: #000;
+            color: #1428A0;
             font-weight: 800;
         }
 
@@ -208,7 +215,7 @@
 
         <!-- Conteneur d'historique -->
         <div class="history-list" id="withdrawHistoryContainer">
-            <div class="empty-state">Chargement de votre historique...</div>
+            <div class="empty-state"><i class="fas fa-spinner fa-spin"></i><br>Chargement de votre historique...</div>
         </div>
     </div>
 
@@ -251,7 +258,7 @@
                 if (!historyData || Object.keys(historyData).length === 0) {
                     container.innerHTML = `
                         <div class="empty-state">
-                            <i class="fas fa-folder-open" style="font-size: 24px; margin-bottom: 8px; color: #ccc;"></i><br>
+                            <i class="fas fa-folder-open" style="font-size: 24px; margin-bottom: 8px; color: #1428A0;"></i><br>
                             Vous n'avez effectué aucune demande de retrait pour le moment.
                         </div>
                     `;
@@ -299,7 +306,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <span class="detail-label">Montant net à recevoir</span>
-                                    <span class="detail-value" style="color: #137333;">${netAmount} FC</span>
+                                    <span class="detail-value" style="color: #155724;">${netAmount} FC</span>
                                 </div>
                             </div>
                             <div class="date-footer">
@@ -314,7 +321,7 @@
 
             } catch (err) {
                 console.error("Erreur de chargement de l'historique :", err);
-                container.innerHTML = `<div class="empty-state" style="color: #d93025;">Une erreur s'est produite lors du chargement des données.</div>`;
+                container.innerHTML = `<div class="empty-state" style="color: #d93025;"><i class="fas fa-exclamation-triangle" style="color: #d93025; font-size: 24px; margin-bottom: 8px;"></i><br>Une erreur s'est produite lors du chargement des données.</div>`;
             }
         }
 
